@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "buildId": "build_6847aa36bc84",
+  "result": "Succeeded",
+  "platform": "Android",
+  "outputPath": "/home/giwan/PocketWreckshop/Builds/Android/PocketWreckshop.apk",
+  "totalSizeBytes": 678480771,
+  "buildTimeMs": 47971,
+  "buildStartedAt": "2026-10-25T17:07:59.2595790Z",
+  "buildEndedAt": "2026-10-25T17:08:47.2311100Z",
+  "totalWarnings": 0,
+  "totalErrors": 0,
+  "errors": [],
+  "warnings": []
+}

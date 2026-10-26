@@ -1,0 +1,551 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3548f9335ad245342b3d504c17ab0be6, type: 3}
+  m_Name: GameCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::PocketWreckshop.GameCatalog
+  hammers:
+  - title: Claw hammer
+    description: A little rusty. A lot of heart.
+    damage: 14
+    price: 0
+    color: {r: 0.7137255, g: 0.7647059, b: 0.7411765, a: 1}
+  - title: Club hammer
+    description: Twice the punch. Half the taps.
+    damage: 28
+    price: 120
+    color: {r: 0.60784316, g: 0.8666667, b: 0.7647059, a: 1}
+  - title: Sledgehammer
+    description: For very personal demolition.
+    damage: 55
+    price: 360
+    color: {r: 0.9372549, g: 0.7176471, b: 0.46666667, a: 1}
+  - title: Power hammer
+    description: A one-hit wonder. Usually.
+    damage: 110
+    price: 950
+    color: {r: 0.77254903, g: 0.67058825, b: 0.9647059, a: 1}
+  phones:
+  - title: Phone
+    tag: Phone
+    integrity: 72
+    price: 25
+    partsPerType: 1
+    scrapCash: 0
+    kind: 0
+    stages:
+    - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
+    - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
+    - {fileID: 21300000, guid: 824d084e5cc42155a9ea2f450647faa4, type: 3}
+    - {fileID: 21300000, guid: 988cc68a52dcfdf6abc3c9ead7151af9, type: 3}
+    - {fileID: 21300000, guid: 08ae7415863b060c2be365f8c1cb9ea1, type: 3}
+    - {fileID: 21300000, guid: b26449472204aa1bb8f533f8d2b1d68d, type: 3}
+    - {fileID: 21300000, guid: 51bbe1e04a1465de2849c88fdcc48884, type: 3}
+    - {fileID: 21300000, guid: ad095b3b96cb1bce9bd05007019c1ea7, type: 3}
+    - {fileID: 21300000, guid: 6d5bdc562ff1ef40190bccc519b51182, type: 3}
+    - {fileID: 21300000, guid: 0483a702232bf84da8ed8fde73dd79f4, type: 3}
+    - {fileID: 21300000, guid: d0c1312915c7703ab8f10bd9b4bf198d, type: 3}
+    - {fileID: 21300000, guid: 0276862d8cc651a468e6447564c88500, type: 3}
+    - {fileID: 21300000, guid: a0ab8919dd7fa007481984407b716b0c, type: 3}
+    - {fileID: 21300000, guid: 14daaa496141933b4857fb3fb6fc4c38, type: 3}
+    - {fileID: 21300000, guid: 7fab5c24d1f872938aac83133b4e2249, type: 3}
+    - {fileID: 21300000, guid: 2c6ef5bf3d1c50ef1bf39990d054d1a8, type: 3}
+    - {fileID: 21300000, guid: a7bc07e8e388bae5da25d0e9c49585ef, type: 3}
+    - {fileID: 21300000, guid: 6e67b76ff6af394faa64ff0000de15c3, type: 3}
+    - {fileID: 21300000, guid: a2060b111f0ab9a7e957da08621b7233, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 445e0b6e0386b53bd85edafa3b2fecb9, type: 3}
+    - {fileID: 21300000, guid: b4eb53af5d357429d994202548275beb, type: 3}
+    - {fileID: 21300000, guid: ff44529e5fb745143a89e510e9bea641, type: 3}
+    - {fileID: 21300000, guid: 0575ba7d38512c5389e0aa0c84b3fd38, type: 3}
+    - {fileID: 21300000, guid: 4bde34e02ff880b2588944bbed1fb31c, type: 3}
+    - {fileID: 21300000, guid: 00a8400dde8fc1fbbbfd30024ef68ae3, type: 3}
+    - {fileID: 21300000, guid: bb6b80ac784eb829aab0f4ca8c685e1d, type: 3}
+    - {fileID: 21300000, guid: 12f47de50a735b397ae617747837f5ab, type: 3}
+    - {fileID: 21300000, guid: aad851e5ff9b7246a81e9e8ab9c7b69e, type: 3}
+    - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
+    - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
+    - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Phone Pro
+    tag: Phone
+    integrity: 150
+    price: 75
+    partsPerType: 3
+    scrapCash: 0
+    kind: 0
+    stages:
+    - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
+    - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
+    - {fileID: 21300000, guid: 824d084e5cc42155a9ea2f450647faa4, type: 3}
+    - {fileID: 21300000, guid: 988cc68a52dcfdf6abc3c9ead7151af9, type: 3}
+    - {fileID: 21300000, guid: 08ae7415863b060c2be365f8c1cb9ea1, type: 3}
+    - {fileID: 21300000, guid: b26449472204aa1bb8f533f8d2b1d68d, type: 3}
+    - {fileID: 21300000, guid: 51bbe1e04a1465de2849c88fdcc48884, type: 3}
+    - {fileID: 21300000, guid: ad095b3b96cb1bce9bd05007019c1ea7, type: 3}
+    - {fileID: 21300000, guid: 6d5bdc562ff1ef40190bccc519b51182, type: 3}
+    - {fileID: 21300000, guid: 0483a702232bf84da8ed8fde73dd79f4, type: 3}
+    - {fileID: 21300000, guid: d0c1312915c7703ab8f10bd9b4bf198d, type: 3}
+    - {fileID: 21300000, guid: 0276862d8cc651a468e6447564c88500, type: 3}
+    - {fileID: 21300000, guid: a0ab8919dd7fa007481984407b716b0c, type: 3}
+    - {fileID: 21300000, guid: 14daaa496141933b4857fb3fb6fc4c38, type: 3}
+    - {fileID: 21300000, guid: 7fab5c24d1f872938aac83133b4e2249, type: 3}
+    - {fileID: 21300000, guid: 2c6ef5bf3d1c50ef1bf39990d054d1a8, type: 3}
+    - {fileID: 21300000, guid: a7bc07e8e388bae5da25d0e9c49585ef, type: 3}
+    - {fileID: 21300000, guid: 6e67b76ff6af394faa64ff0000de15c3, type: 3}
+    - {fileID: 21300000, guid: a2060b111f0ab9a7e957da08621b7233, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 445e0b6e0386b53bd85edafa3b2fecb9, type: 3}
+    - {fileID: 21300000, guid: b4eb53af5d357429d994202548275beb, type: 3}
+    - {fileID: 21300000, guid: ff44529e5fb745143a89e510e9bea641, type: 3}
+    - {fileID: 21300000, guid: 0575ba7d38512c5389e0aa0c84b3fd38, type: 3}
+    - {fileID: 21300000, guid: 4bde34e02ff880b2588944bbed1fb31c, type: 3}
+    - {fileID: 21300000, guid: 00a8400dde8fc1fbbbfd30024ef68ae3, type: 3}
+    - {fileID: 21300000, guid: bb6b80ac784eb829aab0f4ca8c685e1d, type: 3}
+    - {fileID: 21300000, guid: 12f47de50a735b397ae617747837f5ab, type: 3}
+    - {fileID: 21300000, guid: aad851e5ff9b7246a81e9e8ab9c7b69e, type: 3}
+    - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
+    - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
+    - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Premium phone
+    tag: Phone
+    integrity: 240
+    price: 155
+    partsPerType: 6
+    scrapCash: 0
+    kind: 0
+    stages:
+    - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
+    - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
+    - {fileID: 21300000, guid: 824d084e5cc42155a9ea2f450647faa4, type: 3}
+    - {fileID: 21300000, guid: 988cc68a52dcfdf6abc3c9ead7151af9, type: 3}
+    - {fileID: 21300000, guid: 08ae7415863b060c2be365f8c1cb9ea1, type: 3}
+    - {fileID: 21300000, guid: b26449472204aa1bb8f533f8d2b1d68d, type: 3}
+    - {fileID: 21300000, guid: 51bbe1e04a1465de2849c88fdcc48884, type: 3}
+    - {fileID: 21300000, guid: ad095b3b96cb1bce9bd05007019c1ea7, type: 3}
+    - {fileID: 21300000, guid: 6d5bdc562ff1ef40190bccc519b51182, type: 3}
+    - {fileID: 21300000, guid: 0483a702232bf84da8ed8fde73dd79f4, type: 3}
+    - {fileID: 21300000, guid: d0c1312915c7703ab8f10bd9b4bf198d, type: 3}
+    - {fileID: 21300000, guid: 0276862d8cc651a468e6447564c88500, type: 3}
+    - {fileID: 21300000, guid: a0ab8919dd7fa007481984407b716b0c, type: 3}
+    - {fileID: 21300000, guid: 14daaa496141933b4857fb3fb6fc4c38, type: 3}
+    - {fileID: 21300000, guid: 7fab5c24d1f872938aac83133b4e2249, type: 3}
+    - {fileID: 21300000, guid: 2c6ef5bf3d1c50ef1bf39990d054d1a8, type: 3}
+    - {fileID: 21300000, guid: a7bc07e8e388bae5da25d0e9c49585ef, type: 3}
+    - {fileID: 21300000, guid: 6e67b76ff6af394faa64ff0000de15c3, type: 3}
+    - {fileID: 21300000, guid: a2060b111f0ab9a7e957da08621b7233, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 445e0b6e0386b53bd85edafa3b2fecb9, type: 3}
+    - {fileID: 21300000, guid: b4eb53af5d357429d994202548275beb, type: 3}
+    - {fileID: 21300000, guid: ff44529e5fb745143a89e510e9bea641, type: 3}
+    - {fileID: 21300000, guid: 0575ba7d38512c5389e0aa0c84b3fd38, type: 3}
+    - {fileID: 21300000, guid: 4bde34e02ff880b2588944bbed1fb31c, type: 3}
+    - {fileID: 21300000, guid: 00a8400dde8fc1fbbbfd30024ef68ae3, type: 3}
+    - {fileID: 21300000, guid: bb6b80ac784eb829aab0f4ca8c685e1d, type: 3}
+    - {fileID: 21300000, guid: 12f47de50a735b397ae617747837f5ab, type: 3}
+    - {fileID: 21300000, guid: aad851e5ff9b7246a81e9e8ab9c7b69e, type: 3}
+    - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
+    - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
+    - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Scrap phone
+    tag: Phone
+    integrity: 180
+    price: 0
+    partsPerType: 1
+    scrapCash: 0
+    kind: 0
+    stages:
+    - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
+    - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
+    - {fileID: 21300000, guid: 824d084e5cc42155a9ea2f450647faa4, type: 3}
+    - {fileID: 21300000, guid: 988cc68a52dcfdf6abc3c9ead7151af9, type: 3}
+    - {fileID: 21300000, guid: 08ae7415863b060c2be365f8c1cb9ea1, type: 3}
+    - {fileID: 21300000, guid: b26449472204aa1bb8f533f8d2b1d68d, type: 3}
+    - {fileID: 21300000, guid: 51bbe1e04a1465de2849c88fdcc48884, type: 3}
+    - {fileID: 21300000, guid: ad095b3b96cb1bce9bd05007019c1ea7, type: 3}
+    - {fileID: 21300000, guid: 6d5bdc562ff1ef40190bccc519b51182, type: 3}
+    - {fileID: 21300000, guid: 0483a702232bf84da8ed8fde73dd79f4, type: 3}
+    - {fileID: 21300000, guid: d0c1312915c7703ab8f10bd9b4bf198d, type: 3}
+    - {fileID: 21300000, guid: 0276862d8cc651a468e6447564c88500, type: 3}
+    - {fileID: 21300000, guid: a0ab8919dd7fa007481984407b716b0c, type: 3}
+    - {fileID: 21300000, guid: 14daaa496141933b4857fb3fb6fc4c38, type: 3}
+    - {fileID: 21300000, guid: 7fab5c24d1f872938aac83133b4e2249, type: 3}
+    - {fileID: 21300000, guid: 2c6ef5bf3d1c50ef1bf39990d054d1a8, type: 3}
+    - {fileID: 21300000, guid: a7bc07e8e388bae5da25d0e9c49585ef, type: 3}
+    - {fileID: 21300000, guid: 6e67b76ff6af394faa64ff0000de15c3, type: 3}
+    - {fileID: 21300000, guid: a2060b111f0ab9a7e957da08621b7233, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 445e0b6e0386b53bd85edafa3b2fecb9, type: 3}
+    - {fileID: 21300000, guid: b4eb53af5d357429d994202548275beb, type: 3}
+    - {fileID: 21300000, guid: ff44529e5fb745143a89e510e9bea641, type: 3}
+    - {fileID: 21300000, guid: 0575ba7d38512c5389e0aa0c84b3fd38, type: 3}
+    - {fileID: 21300000, guid: 4bde34e02ff880b2588944bbed1fb31c, type: 3}
+    - {fileID: 21300000, guid: 00a8400dde8fc1fbbbfd30024ef68ae3, type: 3}
+    - {fileID: 21300000, guid: bb6b80ac784eb829aab0f4ca8c685e1d, type: 3}
+    - {fileID: 21300000, guid: 12f47de50a735b397ae617747837f5ab, type: 3}
+    - {fileID: 21300000, guid: aad851e5ff9b7246a81e9e8ab9c7b69e, type: 3}
+    - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
+    - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
+    - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Tablet
+    tag: Tablet
+    integrity: 100
+    price: 60
+    partsPerType: 2
+    scrapCash: 0
+    kind: 1
+    stages:
+    - {fileID: 21300000, guid: c595374bf1382f7868c498bd40fafdd0, type: 3}
+    - {fileID: 21300000, guid: a5ea843275b31b03bbcadc1a9009a915, type: 3}
+    - {fileID: 21300000, guid: e1ed6c73230341e8fbdf07240a73fe7c, type: 3}
+    - {fileID: 21300000, guid: d6738d6c42a1269e2bb9e3c222bf2d29, type: 3}
+    - {fileID: 21300000, guid: a45d6b592ee4cfc648fa3c4b5195dc1b, type: 3}
+    - {fileID: 21300000, guid: 3e6d2f2910117fc149427e5bc06c93e6, type: 3}
+    - {fileID: 21300000, guid: 6e0487a61bb23aec5b37ae24244d342e, type: 3}
+    - {fileID: 21300000, guid: c97c49a4cd39dbd958c2bdc881816c07, type: 3}
+    - {fileID: 21300000, guid: bb9928c948ad0ddefb87e38b8f1b878f, type: 3}
+    - {fileID: 21300000, guid: d00afb0746050db11ac24605420aead6, type: 3}
+    - {fileID: 21300000, guid: d9f97ebe32190299e9d4af2873670295, type: 3}
+    - {fileID: 21300000, guid: 9f11cee8e8028d3169d0a134cca51d91, type: 3}
+    - {fileID: 21300000, guid: 6d3ec57f3e1725522a8b1b6b28395252, type: 3}
+    - {fileID: 21300000, guid: 3a6877537843c138ea8f358b5e5d3e1b, type: 3}
+    - {fileID: 21300000, guid: 4ef18283a6ca2fa529bb14d72e502a2d, type: 3}
+    - {fileID: 21300000, guid: d67fd0aaabf835569a338b51929a7f7d, type: 3}
+    - {fileID: 21300000, guid: 52a94821099e35be8aca4af34d4f0755, type: 3}
+    - {fileID: 21300000, guid: de91313667368771d9e41ad09adc5afd, type: 3}
+    - {fileID: 21300000, guid: 1cb728424ffc530f982a7e7f911fed60, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 1934bb10379d18348b6e7f2ab7298441, type: 3}
+    - {fileID: 21300000, guid: 8acf43fcc7ee33284aa1cef9868976fc, type: 3}
+    - {fileID: 21300000, guid: 09ceed7a916b38ab792a5454fc6d216b, type: 3}
+    - {fileID: 21300000, guid: 1f618f6e9474c6149a6075922e903d90, type: 3}
+    - {fileID: 21300000, guid: 7b9dabf26058fcc08b8ac3d942e313c0, type: 3}
+    - {fileID: 21300000, guid: 4792fb5f075682585826f2dfa53aa687, type: 3}
+    - {fileID: 21300000, guid: aa1d2947da93752b8ac58e43cd955b91, type: 3}
+    - {fileID: 21300000, guid: 1c4c84bf45019d0fbb914a68a8bcc653, type: 3}
+    - {fileID: 21300000, guid: a2f6fb889d59cd0b8bf27161be684754, type: 3}
+    - {fileID: 21300000, guid: 05771c63c0e57e26783d62dc617548c2, type: 3}
+    - {fileID: 21300000, guid: 12ed2c11b25fd8946bdacc2bed06efcb, type: 3}
+    - {fileID: 21300000, guid: 6b29acbb94c08cd9b95a8ba4284cf050, type: 3}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Headphones
+    tag: Headphones
+    integrity: 70
+    price: 40
+    partsPerType: 1
+    scrapCash: 0
+    kind: 2
+    stages:
+    - {fileID: 21300000, guid: 5c865052ee6029396936210d2020092b, type: 3}
+    - {fileID: 21300000, guid: 5d71ddcb6d3db7fbcb9163cfae4948ec, type: 3}
+    - {fileID: 21300000, guid: 05153ba93b4c73bf09fd687be8e2f4d5, type: 3}
+    - {fileID: 21300000, guid: 6adc67d57e881281ca8acd9970ed3cdb, type: 3}
+    - {fileID: 21300000, guid: 4ef23365573f1424998a6ae3c2a763d9, type: 3}
+    - {fileID: 21300000, guid: 16a25b25911a22f14842fc41b2bd60a3, type: 3}
+    - {fileID: 21300000, guid: 8281b11cb734b3bcc95bdb6a3edfe6aa, type: 3}
+    - {fileID: 21300000, guid: eda6da3bb47cc92a19796c9efeeea943, type: 3}
+    - {fileID: 21300000, guid: 83989bceb7dab58aebfdef5787aa0f69, type: 3}
+    - {fileID: 21300000, guid: 7d10026bd125563c0a665e04ee7a5535, type: 3}
+    - {fileID: 21300000, guid: 7b9bfbaedea48c732b5a3d8bebd4383c, type: 3}
+    - {fileID: 21300000, guid: 87626e4db218c01ad8c55d4845f12ed5, type: 3}
+    - {fileID: 21300000, guid: 67722d8be9ce21d7584ef035f494a5e1, type: 3}
+    - {fileID: 21300000, guid: 5643a973418560dddb6a301f3e99fdd3, type: 3}
+    - {fileID: 21300000, guid: 12bb00bddae99243b90e3f8d7aa62291, type: 3}
+    - {fileID: 21300000, guid: 1130527cea1318fbdbbe338fe41de42f, type: 3}
+    - {fileID: 21300000, guid: d997c9d11c7362bab9f4f2cc1733f684, type: 3}
+    - {fileID: 21300000, guid: 07bf1c6b65a43cc228f822a9cc3d7eba, type: 3}
+    - {fileID: 21300000, guid: bb7a4421f5ec3e42e9d053aa722d9df3, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 605b54364fc8f600c9016c7913f83464, type: 3}
+    - {fileID: 21300000, guid: a7fe0e80ebac49470827573d89555198, type: 3}
+    - {fileID: 21300000, guid: ff0e1868bab02945b80990c2709b39f0, type: 3}
+    - {fileID: 21300000, guid: 2162c96893aa79248a7ea7221e933b0b, type: 3}
+    - {fileID: 21300000, guid: 3553877d7eb814820aa67fdde0c32a4f, type: 3}
+    - {fileID: 21300000, guid: 46d5662ec7cec56cdba3e90ace029354, type: 3}
+    - {fileID: 21300000, guid: 258d4659e89fa74bea67065ee6412d96, type: 3}
+    - {fileID: 21300000, guid: e47f7cad113d219bb91172f55bf0fa6a, type: 3}
+    - {fileID: 21300000, guid: 9a1e7334588329c6581585b0cf52455d, type: 3}
+    - {fileID: 21300000, guid: 65ca29921ffe934da88542d1715eb296, type: 3}
+    - {fileID: 21300000, guid: 8740765d24f3a3ec78ec5e1f17e80d7c, type: 3}
+    - {fileID: 21300000, guid: 736197a251cf6a530999ceaea712c09a, type: 3}
+    phaseNames:
+    - Earpads
+    - Headband
+    - Drivers
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Game console
+    tag: Console
+    integrity: 150
+    price: 120
+    partsPerType: 4
+    scrapCash: 0
+    kind: 3
+    stages:
+    - {fileID: 21300000, guid: f2ce545cfd53b293f9ec80f77acf06b7, type: 3}
+    - {fileID: 21300000, guid: 0734ea197591b41f79b4808c57311f4b, type: 3}
+    - {fileID: 21300000, guid: 85377a75a595f8effa5e5547b2a33084, type: 3}
+    - {fileID: 21300000, guid: 0cdb25429957390a9b2863b765d35ba2, type: 3}
+    - {fileID: 21300000, guid: d7938bb9e28acb0aa83d65f6b3c0a8ce, type: 3}
+    - {fileID: 21300000, guid: 603b3a6b4208b13fe83dc0a2069eb569, type: 3}
+    - {fileID: 21300000, guid: e234bcd331efef211adc02e5c6f39771, type: 3}
+    - {fileID: 21300000, guid: e9cdcc072fab72592b4263dc720ea631, type: 3}
+    - {fileID: 21300000, guid: 8f6e4550a8c3c0dadae8361def72c459, type: 3}
+    - {fileID: 21300000, guid: 9807d873e92f9abf0a9167637cbb1f2c, type: 3}
+    - {fileID: 21300000, guid: dc21b39de75a14c7ebfbcef4c86c923f, type: 3}
+    - {fileID: 21300000, guid: e5f0582f52e2e9387a065a9a9bec5041, type: 3}
+    - {fileID: 21300000, guid: 89cc02ecf7c3dbcb793df9e3b72a5d40, type: 3}
+    - {fileID: 21300000, guid: 57ae95cc5496259939615995021aaf0f, type: 3}
+    - {fileID: 21300000, guid: 807f3f3f270b1e9f3940538045753ed2, type: 3}
+    - {fileID: 21300000, guid: 75ea4c14d34e255b89d71e517c1df822, type: 3}
+    - {fileID: 21300000, guid: 7d57d564d220c04698cbd1a74ab50462, type: 3}
+    - {fileID: 21300000, guid: 6716e1b8257070f8f891b681d5cf2dc3, type: 3}
+    - {fileID: 21300000, guid: 06f3fb4423d9533fab542d3b98779481, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 9268805e48bee6941bbca55878433604, type: 3}
+    - {fileID: 21300000, guid: c6bcbf1ec1e27ffd09173ac8f0bad35d, type: 3}
+    - {fileID: 21300000, guid: f6ab2aae9eee34c80852ffb132092a32, type: 3}
+    - {fileID: 21300000, guid: af72c2cd03eab8f44a15abda87feeaa9, type: 3}
+    - {fileID: 21300000, guid: 02810072ed8c8e536be86aa457d7e97a, type: 3}
+    - {fileID: 21300000, guid: eb0b870875635a3fba3ce0d8a627f29d, type: 3}
+    - {fileID: 21300000, guid: 1b4d79c9afe5a564188d4bdbf315aaf1, type: 3}
+    - {fileID: 21300000, guid: 72c3abd34e81389a58faae2be03348ff, type: 3}
+    - {fileID: 21300000, guid: dd37333176d06c2adba05b5468d577b9, type: 3}
+    - {fileID: 21300000, guid: ea872531692ed6184a6f66c634d0cdd4, type: 3}
+    - {fileID: 21300000, guid: e5b9bcdc329ac532abca0d876f00bc5d, type: 3}
+    - {fileID: 21300000, guid: a706b44416cc89284b510df78466192f, type: 3}
+    phaseNames:
+    - Panels
+    - Case
+    - Mainboard
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Controller
+    tag: Controller
+    integrity: 65
+    price: 35
+    partsPerType: 1
+    scrapCash: 0
+    kind: 4
+    stages:
+    - {fileID: 21300000, guid: 82294ae906ebd2a2c9d141caad4a473e, type: 3}
+    - {fileID: 21300000, guid: e4f5bf95fa4326e128632921e7216845, type: 3}
+    - {fileID: 21300000, guid: f863407dc87acc8d1bcb96b50c0481f3, type: 3}
+    - {fileID: 21300000, guid: 2e9be59c287931475852d8264d77e6f9, type: 3}
+    - {fileID: 21300000, guid: 27c53c3af00648b47b1ca20417ec61ca, type: 3}
+    - {fileID: 21300000, guid: d473f851be9a36d798ef45b6410db217, type: 3}
+    - {fileID: 21300000, guid: 324b27d179a6e3d7f857451b188b0de9, type: 3}
+    - {fileID: 21300000, guid: 4d4db86104e6f689f8a878a8eef38819, type: 3}
+    - {fileID: 21300000, guid: f747de9dc6c131a339a367c8c7311dc5, type: 3}
+    - {fileID: 21300000, guid: 51add2ee0cb4f7c4eb446e17d03f875a, type: 3}
+    - {fileID: 21300000, guid: fdf00b5a65ac33affbfbdebd4fe6b488, type: 3}
+    - {fileID: 21300000, guid: 5d640adad4845a9c182070f7bdff8eca, type: 3}
+    - {fileID: 21300000, guid: d7291d30a6555d0ebb45587a771787c4, type: 3}
+    - {fileID: 21300000, guid: ff045b3c6e3218981a89a240a12a65b8, type: 3}
+    - {fileID: 21300000, guid: 739bd82e398239260bf58223d5d605c0, type: 3}
+    - {fileID: 21300000, guid: 1e92b9381be57b8788d541802d3e1a78, type: 3}
+    - {fileID: 21300000, guid: 6e60f2dd4298faf148b69f5bad1becd3, type: 3}
+    - {fileID: 21300000, guid: 3b893789034c6fbf1873f258fd6072dc, type: 3}
+    - {fileID: 21300000, guid: 8c9a599ce832f0481bd92687cdd768d8, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 0d086cdedc2a979a3ad79f65212f32f2, type: 3}
+    - {fileID: 21300000, guid: 6273a36f6ec813296afe8bf01ef3b3f3, type: 3}
+    - {fileID: 21300000, guid: 72cbf981e6557d60d894cdec003aef82, type: 3}
+    - {fileID: 21300000, guid: cbc556dcb5c15a17387ad1d5349e6208, type: 3}
+    - {fileID: 21300000, guid: 745c147603a4f5e3785d8ce8c6953193, type: 3}
+    - {fileID: 21300000, guid: 4f8c1105c060bd49db9937c56a3780ff, type: 3}
+    - {fileID: 21300000, guid: bd25081218bd72d69af1f5da76cd6711, type: 3}
+    - {fileID: 21300000, guid: 8124342320c6be1618198143146ea239, type: 3}
+    - {fileID: 21300000, guid: eb5215bbaa5c0e18e8ed28171d62e55b, type: 3}
+    - {fileID: 21300000, guid: 11990178cc1da5007af0d4761b5c1632, type: 3}
+    - {fileID: 21300000, guid: dd80ab027b968b6f0b47389fcba62e4d, type: 3}
+    - {fileID: 21300000, guid: d1c6ee426ec4e21178a9ce3fc09bc943, type: 3}
+    phaseNames:
+    - Buttons
+    - Grips
+    - Circuit board
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Speaker
+    tag: Speaker
+    integrity: 60
+    price: 30
+    partsPerType: 1
+    scrapCash: 0
+    kind: 5
+    stages:
+    - {fileID: 21300000, guid: db45edeb67f79671f9dfc4c3401e3cdc, type: 3}
+    - {fileID: 21300000, guid: dbf34f18a327a3dd78ec3c68a54dad45, type: 3}
+    - {fileID: 21300000, guid: ba003f47da7065a769f4f72e74f25806, type: 3}
+    - {fileID: 21300000, guid: 4ad8f9c85f89e364b9a632e5f0985971, type: 3}
+    - {fileID: 21300000, guid: 4f4d71763d11c55d19ece6092a0f80b2, type: 3}
+    - {fileID: 21300000, guid: 3413162f5547687c2b63c712fdf5d9d4, type: 3}
+    - {fileID: 21300000, guid: 6049d86be5a7d52418d14528339c0952, type: 3}
+    - {fileID: 21300000, guid: 324476ffb1e5146578dffd47e3b75a7d, type: 3}
+    - {fileID: 21300000, guid: 5bb76221c6e4bce47b3b175ccac51f93, type: 3}
+    - {fileID: 21300000, guid: 4f37b2813b6e78c0f9003244b802487f, type: 3}
+    - {fileID: 21300000, guid: 8563401a1a69f360db017dde0222773e, type: 3}
+    - {fileID: 21300000, guid: 0ee714367b66139949bd23cc0d68e069, type: 3}
+    - {fileID: 21300000, guid: f8c50defc3996cceb871476b39f3ea45, type: 3}
+    - {fileID: 21300000, guid: da526e824f65130f6bfcfe6efd62893c, type: 3}
+    - {fileID: 21300000, guid: c48ba4ad703d6b0a89e28b83e49541a3, type: 3}
+    - {fileID: 21300000, guid: 89e0315b6dddb23a58de81a51211e52c, type: 3}
+    - {fileID: 21300000, guid: c30a41fe5651c2210a2a1cf802d742db, type: 3}
+    - {fileID: 21300000, guid: 8ff3b77ff4b9e858cbffad70a1f49899, type: 3}
+    - {fileID: 21300000, guid: c272327b46686864796b1769c5ac3554, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 93051ba8ba7fb11068cf6b0d1ab91b1c, type: 3}
+    - {fileID: 21300000, guid: 63b2181c20a39ff17b7acc87c975de53, type: 3}
+    - {fileID: 21300000, guid: c821dfdfb1e020b2395eee6352500e96, type: 3}
+    - {fileID: 21300000, guid: 7e31c9c79b8b5d74dad04560f29e4ff6, type: 3}
+    - {fileID: 21300000, guid: d1ccb63f9b2b199138fec0fbc54d9777, type: 3}
+    - {fileID: 21300000, guid: a85ffdad2109f4e4faa13e69b97e18f2, type: 3}
+    - {fileID: 21300000, guid: 44437da0c0afa28348da696b2393b069, type: 3}
+    - {fileID: 21300000, guid: 3aa4dc52c8e285a4e8657a941a43aa68, type: 3}
+    - {fileID: 21300000, guid: 58eed79c8659ad24b9caeb131b99666e, type: 3}
+    - {fileID: 21300000, guid: e3a4940ca86fea650b654b296cefdc04, type: 3}
+    - {fileID: 21300000, guid: b545f5acc31f46be6bf315bd4d1d544f, type: 3}
+    - {fileID: 21300000, guid: b8eb884c73a59a80b98775a54f9c6408, type: 3}
+    phaseNames:
+    - Grille
+    - Shell
+    - Driver
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Monitor
+    tag: Monitor
+    integrity: 120
+    price: 85
+    partsPerType: 3
+    scrapCash: 0
+    kind: 6
+    stages:
+    - {fileID: 21300000, guid: aea3dc5e4f961dc08acd8676c3d6cf99, type: 3}
+    - {fileID: 21300000, guid: 38e0a65131b537299aa5dd3b3e45239c, type: 3}
+    - {fileID: 21300000, guid: 055496c8d0c3ac48fa23f9dd3b0f1568, type: 3}
+    - {fileID: 21300000, guid: ce664d04fa01b259fa24501b418e8d8b, type: 3}
+    - {fileID: 21300000, guid: 5ea18db5957dbb69b9de23d01ac35d27, type: 3}
+    - {fileID: 21300000, guid: c2f0149e24c0801ad857acb31e67120e, type: 3}
+    - {fileID: 21300000, guid: 6ad38f107cb4370e99829788941d4036, type: 3}
+    - {fileID: 21300000, guid: 285c1d3ac4f8689d58b48f89a8f433dd, type: 3}
+    - {fileID: 21300000, guid: b7c73e0f4c172fd1c93ba07482be2000, type: 3}
+    - {fileID: 21300000, guid: 7ff49ebef1f7b1563b0b99773ce45d06, type: 3}
+    - {fileID: 21300000, guid: 813d79803657c323783d36036077ad1c, type: 3}
+    - {fileID: 21300000, guid: 633736774d78526acb586f88361b68a9, type: 3}
+    - {fileID: 21300000, guid: 6cb9016f7f9b18c7ebc026048f0a0cfe, type: 3}
+    - {fileID: 21300000, guid: d68dc7d9434834ceeb6601cb466dd365, type: 3}
+    - {fileID: 21300000, guid: e73d9fd21d09b6dd49e3772e84a514a5, type: 3}
+    - {fileID: 21300000, guid: d5010c9bca2fca833b8e4736f8d67b33, type: 3}
+    - {fileID: 21300000, guid: c51dc4a8b2b6a25dd803fd11cecfc899, type: 3}
+    - {fileID: 21300000, guid: 0b816a57c165353f3ad46eb1f69b375e, type: 3}
+    - {fileID: 21300000, guid: 9ee5550a94f1fd9c48edb70e5ebbbb89, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: 2c2562b47e94269428f7ac7c0f1950f0, type: 3}
+    - {fileID: 21300000, guid: 0926cc67fd03abd258c6819b740e1ba9, type: 3}
+    - {fileID: 21300000, guid: 369cc7f8b9c2cb37daa1ab905807c1c1, type: 3}
+    - {fileID: 21300000, guid: 4b592457377b807ed82babe37c57dd1c, type: 3}
+    - {fileID: 21300000, guid: d77b350ab2f324204b9c589eecaecd3c, type: 3}
+    - {fileID: 21300000, guid: 795490efa1681ade3bc38aa22b9260e0, type: 3}
+    - {fileID: 21300000, guid: 810f79ab60027eb5da2c1c03e7635bf0, type: 3}
+    - {fileID: 21300000, guid: 0a017aa02e6e22861a39ec650495e60f, type: 3}
+    - {fileID: 21300000, guid: df57e72c6ae841dbeb5516f9b4bb74d1, type: 3}
+    - {fileID: 21300000, guid: 384f7ac2f0e2fd53fa14680a71b2b308, type: 3}
+    - {fileID: 21300000, guid: f74db23934f384f5cb6815dc21f6b649, type: 3}
+    - {fileID: 21300000, guid: cc9de295d87428747a943a60e15af79c, type: 3}
+    phaseNames:
+    - Screen
+    - Housing
+    - Power board
+    color: {r: 1, g: 1, b: 1, a: 1}
+  autoPrices: 960000002c01000058020000i
+  autoIntervals:
+  - 1.2
+  - 0.75
+  - 0.45
+  partNames:
+  - Motherboard
+  partPrices: 3c000000i
+  criticalChance: 0.12
+  damageStages:
+  - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
+  - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
+  - {fileID: 21300000, guid: 824d084e5cc42155a9ea2f450647faa4, type: 3}
+  - {fileID: 21300000, guid: 988cc68a52dcfdf6abc3c9ead7151af9, type: 3}
+  - {fileID: 21300000, guid: 08ae7415863b060c2be365f8c1cb9ea1, type: 3}
+  - {fileID: 21300000, guid: b26449472204aa1bb8f533f8d2b1d68d, type: 3}
+  - {fileID: 21300000, guid: 51bbe1e04a1465de2849c88fdcc48884, type: 3}
+  - {fileID: 21300000, guid: ad095b3b96cb1bce9bd05007019c1ea7, type: 3}
+  - {fileID: 21300000, guid: 6d5bdc562ff1ef40190bccc519b51182, type: 3}
+  - {fileID: 21300000, guid: 0483a702232bf84da8ed8fde73dd79f4, type: 3}
+  - {fileID: 21300000, guid: d0c1312915c7703ab8f10bd9b4bf198d, type: 3}
+  - {fileID: 21300000, guid: 0276862d8cc651a468e6447564c88500, type: 3}
+  - {fileID: 21300000, guid: a0ab8919dd7fa007481984407b716b0c, type: 3}
+  - {fileID: 21300000, guid: 14daaa496141933b4857fb3fb6fc4c38, type: 3}
+  - {fileID: 21300000, guid: 7fab5c24d1f872938aac83133b4e2249, type: 3}
+  - {fileID: 21300000, guid: 2c6ef5bf3d1c50ef1bf39990d054d1a8, type: 3}
+  - {fileID: 21300000, guid: a7bc07e8e388bae5da25d0e9c49585ef, type: 3}
+  - {fileID: 21300000, guid: 6e67b76ff6af394faa64ff0000de15c3, type: 3}
+  - {fileID: 21300000, guid: a2060b111f0ab9a7e957da08621b7233, type: 3}
+  impactSprites:
+  - {fileID: 21300000, guid: 91848412a23344406bfc308d3f693da7, type: 3}
+  - {fileID: 21300000, guid: 03118b91e4ca04c3f8caefafd69dc7c1, type: 3}
+  - {fileID: 21300000, guid: 34a7495c36c9f8cf9afc813f657d5590, type: 3}
+  - {fileID: 21300000, guid: d52f57f6457199fe98aebcad1a9738d7, type: 3}
+  - {fileID: 21300000, guid: 65b84adb10800aa9eb428bf191810997, type: 3}
+  - {fileID: 21300000, guid: 642d7f0e95e2d8a72ac6ac4a2b8f36d5, type: 3}
+  chipSprites:
+  - {fileID: 21300000, guid: 03284ebc481cbcbac8dab79d2a75a716, type: 3}
+  - {fileID: 21300000, guid: fbca06e861b925b7db8474f70f7c33cc, type: 3}
+  - {fileID: 21300000, guid: d9f8db7475628d8a1939d9de515c3cfb, type: 3}
+  - {fileID: 21300000, guid: 71479a41b420a2d74a31e2c791a946dd, type: 3}
+  - {fileID: 21300000, guid: e6442328936372faa81aa93a23357da5, type: 3}
+  - {fileID: 21300000, guid: 23d76da4fac16dcde84623aa97cfc9a4, type: 3}
+  - {fileID: 21300000, guid: 5f72a53b556650fdfad7826e7ea2afb4, type: 3}
+  - {fileID: 21300000, guid: 2e9cdf926453e3ddb88e85875785f62e, type: 3}
+  - {fileID: 21300000, guid: 30f2a1523eab2a90ca71106b9ad553e2, type: 3}
+  - {fileID: 21300000, guid: b5d03aade41cac6cc801ac879a2d69cf, type: 3}
+  - {fileID: 21300000, guid: 5b1dd9e3997adceacb88fa68ad106ecc, type: 3}
+  - {fileID: 21300000, guid: a81762c18fce41fde81700525ec4419d, type: 3}
+  dustSprites:
+  - {fileID: 21300000, guid: c6cd196fa6d9a9e86b70638a1750e33d, type: 3}
+  - {fileID: 21300000, guid: 6c1d43ba7087f11f5a8de09e8bd583ac, type: 3}
+  - {fileID: 21300000, guid: 8df1f87ce689a5dc09cb802543ef5da5, type: 3}
+  - {fileID: 21300000, guid: 96b5b15ec463b9cf3bff66be5b897be1, type: 3}
+  partSprites:
+  - {fileID: 21300000, guid: 30f3b64dc3e49cfa3be5b6d6e7b5d420, type: 3}
+  hammerSprite: {fileID: 21300000, guid: 07c7015fada2a820095f879a89b144ab, type: 3}
+  matSprite: {fileID: 21300000, guid: 4134f1e53be500da39ac13d67967af38, type: 3}
+  hammerSprites:
+  - {fileID: 21300000, guid: 07c7015fada2a820095f879a89b144ab, type: 3}
+  - {fileID: 21300000, guid: c5301ccc4ec3e4f98ae84f1f593d6fb6, type: 3}
+  - {fileID: 21300000, guid: 456e9efa1564ea14283087413201fc9c, type: 3}
+  - {fileID: 21300000, guid: 80494f929a3cb5a13b1bdeec54ee21f7, type: 3}
+  bodyFont: {fileID: 12800000, guid: 00a34be63f9a9372b8d2b80d3690525d, type: 3}
+  headingFont: {fileID: 12800000, guid: 067d9d61594db68db89bc06e7df38097, type: 3}
