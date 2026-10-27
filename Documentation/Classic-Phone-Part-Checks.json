@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "displacement": [
+    0.008666434,
+    -0.006499825
+  ],
+  "checks": "owner layer, authored alignment, shared atlas, wind-up, contact shake, settle, cancellation, other layers, layer removal, empty bench",
+  "portrait_viewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "webgl_build": "Succeeded",
+  "android_build": "Succeeded (zero errors/warnings, APK signature verified)"
+}

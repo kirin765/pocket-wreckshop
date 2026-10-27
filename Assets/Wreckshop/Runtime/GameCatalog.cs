@@ -10,12 +10,23 @@ namespace PocketWreckshop
         public Color color = Color.white;
     }
     public enum DeviceKind { Phone, Tablet, Headphones, Console, Controller, Speaker, Monitor }
+    [Serializable] public class DeviceLayerPart
+    {
+        public int layer;
+        public Sprite sprite;
+        public Vector2 localPosition;
+        public float scale=1f;
+        public int sortingOrder;
+    }
     [Serializable] public class PhoneDefinition
     {
         public string title, tag;
         public int integrity, price, partsPerType, scrapCash;
         public DeviceKind kind;
         public Sprite[] stages, fragments;
+        public DeviceLayerPart[] layerParts=Array.Empty<DeviceLayerPart>();
+        public Rect screenCrackArea;
+        public Material screenCrackMaterial;
         public string[] phaseNames;
         public Color color = Color.white;
     }

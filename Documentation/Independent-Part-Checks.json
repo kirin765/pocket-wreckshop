@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "layer1": [
+    "phone1-parts0",
+    "phone1-parts1"
+  ],
+  "layer2": [
+    "Layer 1",
+    "Layer 2"
+  ],
+  "checks": "filename ownership, visible counts, shared atlas, contact timing, independent translations, opposite rotations, separate clocks, own-center rigid shake, exact settle, native canvas pivots, source backing, switching layers, empty bench",
+  "portrait_viewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "webgl_build": "Succeeded",
+  "android_build": "Succeeded",
+  "apk_signature_verified": true
+}

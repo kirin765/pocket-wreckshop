@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "layer1": [
+    "phone1-parts0",
+    "phone1-parts1"
+  ],
+  "layer2": [
+    "Layer 1",
+    "Layer 2"
+  ],
+  "checks": "filename ownership, visible counts, shared atlas, contact timing, rigid shake, exact settle, native canvas pivots, source backing, switching layers, empty bench",
+  "portrait_viewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "source_aseprite_unchanged": true,
+  "aseprite_canvas": [
+    228,
+    168
+  ],
+  "source_layers": {
+    "Layer": "backing",
+    "Layer 1": "battery",
+    "Layer 2": "motherboard"
+  },
+  "webgl_build": "Succeeded",
+  "android_build": "Succeeded",
+  "apk_signature_verified": true
+}

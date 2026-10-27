@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "firstHitVertices": 128,
+  "heavyVertices": 1788,
+  "checks": "pristine glass, contact timing, persistence, save restoration, five increasing levels, glass clipping, cancellation, layer boundaries, fresh device, empty bench",
+  "portrait_viewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "webgl_build": "Succeeded",
+  "android_build": "Succeeded",
+  "apk_signature_verified": true
+}

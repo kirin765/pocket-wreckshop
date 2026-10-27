@@ -112,12 +112,35 @@ namespace PocketWreckshop.Editor
                 Device("Game console",DeviceKind.Console,150,120,4,0),
                 Device("Controller",DeviceKind.Controller,65,35,1,18),
                 Device("Speaker",DeviceKind.Speaker,60,30,1,16),
-                Device("Monitor",DeviceKind.Monitor,120,85,3,0)
+                Device("Monitor",DeviceKind.Monitor,120,85,3,0),
+                Device("Classic phone",DeviceKind.Phone,90,45,2,0,"classic_phone")
             };
         }
-        static PhoneDefinition Device(string name,DeviceKind kind,int hp,int cost,int parts,int cash)
+        [MenuItem("Pocket Wreckshop/Add Classic phone")]
+        public static void AddClassicPhone()
         {
-            string stem=kind.ToString().ToLowerInvariant();
+            if(EditorApplication.isPlaying)throw new InvalidOperationException("Exit Play mode before adding a device.");
+            ImportSprites();
+            var catalog=AssetDatabase.LoadAssetAtPath<GameCatalog>(CatalogPath);
+            if(!catalog)throw new InvalidOperationException("Existing catalogue is required.");
+            var devices=new System.Collections.Generic.List<PhoneDefinition>(catalog.phones);
+            if(!devices.Exists(p=>p.title=="Classic phone"))
+                devices.Add(Device("Classic phone",DeviceKind.Phone,90,45,2,0,"classic_phone"));
+            ClassicPhoneAssets.Assign(devices.Find(p=>p.title=="Classic phone"));
+            catalog.phones=devices.ToArray();
+            EditorUtility.SetDirty(catalog);
+            DeviceAtlasBuilder.Pack(catalog);
+            AssetDatabase.SaveAssets();
+        }
+        static PhoneDefinition Device(string name,DeviceKind kind,int hp,int cost,int parts,int cash,string artStem=null)
+        {
+            if(artStem=="classic_phone")
+            {
+                var supplied=new PhoneDefinition{title=name,tag=kind.ToString(),kind=kind,integrity=hp,price=cost,
+                    partsPerType=parts,scrapCash=0,color=Color.white,phaseNames=new[]{"Screen","Casing","Modules"}};
+                ClassicPhoneAssets.Assign(supplied);return supplied;
+            }
+            string stem=artStem??kind.ToString().ToLowerInvariant();
             var stages=new Sprite[GameCatalog.DamageFrameCount];
             for(int i=0;i<stages.Length;i++)stages[i]=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Wreckshop/Art/Devices/"+stem+"_"+i.ToString("D2")+".png");
             var fragments=new Sprite[12];
@@ -146,11 +169,12 @@ namespace PocketWreckshop.Editor
             AssetDatabase.Refresh();
             foreach(var file in Directory.GetFiles("Assets/Wreckshop/Art","*.png",SearchOption.AllDirectories))
             {
-                if(file.EndsWith("modern_phone_sheet.png"))continue;
+                if(file.EndsWith("modern_phone_sheet.png")||file.Replace('\\','/').StartsWith(ClassicPhoneAssets.Root))continue;
                 var importer=(TextureImporter)AssetImporter.GetAtPath(file);
                 importer.textureType=TextureImporterType.Sprite;importer.spriteImportMode=SpriteImportMode.Single;importer.spritePixelsPerUnit=100;
                 importer.filterMode=FilterMode.Point;importer.textureCompression=TextureImporterCompression.Uncompressed;importer.mipmapEnabled=false;importer.alphaIsTransparency=true;importer.maxTextureSize=512;importer.SaveAndReimport();
             }
+            ClassicPhoneAssets.Import();
         }
         public static void ConfigurePlayer()
         {

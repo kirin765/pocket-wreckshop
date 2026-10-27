@@ -19,7 +19,22 @@ namespace PocketWreckshop.Editor
         public static string Run()
         {
             checks=0;var c=AssetDatabase.LoadAssetAtPath<GameCatalog>(WorkshopBuilder.CatalogPath);
-            Check(c&&c.phones.Length==10&&c.partSprites.Length==1&&c.partPrices.Length==1,"Single motherboard inventory");
+            Check(c&&c.phones.Length>=11&&c.partSprites.Length==1&&c.partPrices.Length==1,"Single motherboard inventory and appended devices");
+            string[] legacy={"Phone","Phone Pro","Premium phone","Scrap phone","Tablet","Headphones","Game console","Controller","Speaker","Monitor"};
+            for(int i=0;i<legacy.Length;i++)Check(c.phones[i].title==legacy[i],"Existing device IDs stay stable");
+            Check(c.phones[10].title=="Classic phone"&&c.phones[10].kind==DeviceKind.Phone&&c.phones[10].stages[0]!=c.phones[0].stages[0],"Classic phone appends distinct art within Phone family");
+            Check(c.phones[10].screenCrackMaterial&&c.phones[10].screenCrackMaterial.shader.isSupported&&
+                c.phones[10].screenCrackArea.width>0,"Supplied front layer has a supported persistent glass-crack overlay");
+            for(int i=0;i<GameCatalog.DamageFrameCount;i++)
+                Check(AssetDatabase.GetAssetPath(c.phones[10].stages[i])==(i<12?ClassicPhoneAssets.Root+"phone"+(i/6)+".png":ClassicPhoneAssets.AsepritePath),"Supplied source is used directly as the phase layer");
+            Check(c.phones[10].layerParts.Length==4,"Two mounted parts on each exposed layer");
+            foreach(var file in new[]{"phone1-parts0","phone1-parts1"})
+                Check(Array.Exists(c.phones[10].layerParts,p=>p.layer==(file.StartsWith("phone1")?1:2)&&
+                    p.scale>0&&AssetDatabase.GetAssetPath(p.sprite)==ClassicPhoneAssets.Root+file+".png"),"Supplied part belongs to its named layer: "+file);
+            foreach(var name in new[]{"Layer 1","Layer 2"})
+                Check(Array.Exists(c.phones[10].layerParts,p=>p.layer==2&&p.sprite.name==name&&p.scale==1&&p.localPosition==Vector2.zero&&
+                    AssetDatabase.GetAssetPath(p.sprite)==ClassicPhoneAssets.AsepritePath),"Native Aseprite part keeps authored canvas alignment: "+name);
+            for(int i=8;i<12;i++)Check(AssetDatabase.GetAssetPath(c.phones[10].fragments[i])==ClassicPhoneAssets.Root+"phone2.png","Flying module chips are separate from mounted parts");
             Check(c.partPrices[0]==60,"Motherboard dollar sale value");
             var kinds=new System.Collections.Generic.HashSet<DeviceKind>();
             foreach(var device in c.phones)
@@ -27,7 +42,8 @@ namespace PocketWreckshop.Editor
                 kinds.Add(device.kind);Check(device.stages.Length==GameCatalog.DamageFrameCount&&device.phaseNames.Length==3,"Nineteen aligned frames and three steps");
                 Check(device.partsPerType*c.partPrices[0]>device.price&&device.scrapCash==0,"Paid devices profitable through sales only");
                 Check(device.fragments.Length==12&&Array.TrueForAll(device.fragments,f=>f!=null),"Device-specific glass, case and module fragments");
-                foreach(var sprite in device.stages)Check(sprite&&sprite.rect.size==device.stages[0].rect.size,"Frame bounds");
+                foreach(var sprite in device.stages)Check(sprite&&(sprite.rect.size==device.stages[0].rect.size||
+                    AssetDatabase.GetAssetPath(sprite)==ClassicPhoneAssets.AsepritePath&&sprite.name=="Layer"&&sprite.pixelsPerUnit==100),"Frame bounds or registered native canvas pivot");
             }
             Check(c.impactSprites.Length==6&&c.chipSprites.Length==12&&c.dustSprites.Length==4,"Impact flipbooks and material chips");
             Check(kinds.Count==7,"Seven families");

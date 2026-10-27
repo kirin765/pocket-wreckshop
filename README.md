@@ -16,7 +16,7 @@ Open **Hammers** and unlock Auto Hammer for **$150**. It hits once every **1.2 s
 
 Automation only hits the device currently on the visible bench. It pauses in menus, help, other pages, when the app loses focus or enters the background, and when the device is fully broken. Collection, device purchases and motherboard sales remain manual. There is no offline catch-up. Ownership, speed tier and on/off preference are saved; version-4 saves migrate with automation locked.
 
-Damage now accumulates in small physical details: short local cracks, chipped glass, separate sections of the screen coming away, then small sections of casing revealing internals. Earlier damage remains visible as the next piece breaks. Crossing a destruction-step boundary makes a small change; it does not replace the whole front with an empty metal panel. The existing state assets are selected by health and remain on the device until another hit. They do not play as a timed damage animation.
+Damage begins with short local cracks and chipped glass. Small cracks, scuffs and chips accumulate within each layer's six persistent states. Frame 06 replaces the complete damaged surface with the casing, and frame 12 replaces the casing with the internal components. Layers stay fully opaque: there is no crossfade, fade-out, translucent ghosting or irregular peeling mask. Only one layer changes at a phase boundary, and the outer device remains aligned. States are selected by health and remain until another hit; they do not play as a timed damage animation.
 
 The existing transient impact effects and Auto Hammer remain. No additional destruction steps or animation frames were added for this refinement.
 
@@ -25,6 +25,8 @@ The existing transient impact effects and Auto Hammer remain. No additional dest
 The top-left menu button opens a sliding side drawer: **Workbench**, **Used devices**, **Hammers**, and **Sell motherboards**. Select a page, tap X, tap outside, or press Escape to close it. Escape/Android Back also closes help. There are no bottom tabs. The bench displays the current hammer simply, without health bars, phase counters or damage statistics. Inventory offers Sell one and Sell all, with dollar values shown before sale.
 
 Seven device families are included: phone, tablet, headphones, console, controller, speaker and monitor. Catalogue IDs 0–3 remain reserved for legacy phone products. New IDs must be appended.
+
+The Classic phone is appended at ID 10 within the phone family. It uses the supplied PNGs directly as its front, casing and internal layers, with a ribbon and plate mounted on layer 1 and a motherboard on layer 2, all loosening and detaching independently with damage. It costs $45 and yields two motherboards ($120 in sales). Scroll the Used devices list to reach it.
 
 ## Adding models
 
@@ -40,6 +42,7 @@ Read **AGENTS.md** and **Documentation/DEVICE_MODEL_RULES.md** before changing m
 - `Assets/Wreckshop/Runtime/BreakEffect.cs`: transient sprite flipbooks and damped debris.
 - `Tools/generate_impact_sprites.py`: original pixel impact bursts, dust and chips.
 - `Tools/generate_device_sprites.py`: original pixel art.
+- `Assets/Wreckshop/Art/Devices/ClassicPhone/`: unchanged supplied layer PNGs. `ClassicPhoneAssets.cs` defines aligned sprite slices and discovers mounted parts using `phoneN-partsM.png` filenames. Use **Pocket Wreckshop → Add Classic phone** to import/update this device without rebuilding the scene. For phone layer 2, `phone2.aseprite` is imported directly: its `Layer` backing and `Layer 1`/`Layer 2` component sprites share the authored canvas pivot. Animation and private atlas generation are disabled; all sprites use the common atlas. Actual components scatter across the desk and remain until collection, without layer particle bursts. Their resting layout restores from saved health. The nineteen health slots reuse the three supplied device layers. Persistent pixel crack geometry overlays front glass as health decreases; no replacement damage images are used.
 - `Assets/Wreckshop/Editor/WorkshopBuilder.cs`: catalogue/scene generation and platform builds.
 
 The scene builder overwrites the default scene/catalogue. Dynamic page contents are created at runtime. Regenerate art only when intended, then use **Pocket Wreckshop → Create or rebuild scene** to import and pack it. All world sprites must share `DeviceSprites.spriteatlas`.

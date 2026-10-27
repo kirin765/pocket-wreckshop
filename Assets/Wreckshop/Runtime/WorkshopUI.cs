@@ -103,11 +103,19 @@ namespace PocketWreckshop
         void Devices(WorkshopGame game)
         {
             var s=game.Session.State;Title("Used devices",game.Session.HasPhone?"Collect the current device before buying another.":"Buy it. Break it. Sell the motherboard.");
-            int[] devices={0,4,5,6,7,8,9,3};
-            for(int slot=0;slot<devices.Length;slot++)
+            var devices=new System.Collections.Generic.List<int>{0,4,5,6,7,8,9,3};
+            for(int i=10;i<catalog.phones.Length;i++)devices.Add(i);
+            var viewport=Rect(body,"Device list",0,82,450,642);
+            var scrollSurface=viewport.gameObject.AddComponent<Image>();scrollSurface.color=Color.clear;
+            viewport.gameObject.AddComponent<RectMask2D>();
+            var scroll=viewport.gameObject.AddComponent<ScrollRect>();
+            var content=Rect(viewport,"Device cards",0,0,450,Mathf.Max(642,Mathf.Ceil(devices.Count/2f)*146));
+            scroll.viewport=viewport;scroll.content=content;scroll.horizontal=false;
+            scroll.movementType=ScrollRect.MovementType.Clamped;
+            for(int slot=0;slot<devices.Count;slot++)
             {
-                int index=devices[slot];var p=catalog.phones[index];float x=22+(slot%2)*208,y=90+(slot/2)*146;
-                var card=Box(body,"Device "+index,x,y,198,134,Panel).rectTransform;
+                int index=devices[slot];var p=catalog.phones[index];float x=22+(slot%2)*208,y=8+(slot/2)*146;
+                var card=Box(content,"Device "+index,x,y,198,134,Panel).rectTransform;
                 Label(card,"Name",p.title,10,4,178,24,12,White);Icon(card,p.stages[0],10,33,67,88);
                 int count=catalog.Salvage(index)[0];
                 Label(card,"Details","Boards x"+count+"\nSell for $"+(count*catalog.partPrices[0]),87,34,103,38,10,Muted);

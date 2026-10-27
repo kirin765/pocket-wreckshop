@@ -74,6 +74,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
     - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
     - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Casing
@@ -119,6 +127,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
     - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
     - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Casing
@@ -164,6 +180,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
     - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
     - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Casing
@@ -209,6 +233,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 1c4c1eb130e605242b43455a72b09671, type: 3}
     - {fileID: 21300000, guid: 7c20bb205e45a53c8991fa7c97200c89, type: 3}
     - {fileID: 21300000, guid: c9687b2435f0b5359bfb78cea5bbcc47, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Casing
@@ -254,6 +286,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 05771c63c0e57e26783d62dc617548c2, type: 3}
     - {fileID: 21300000, guid: 12ed2c11b25fd8946bdacc2bed06efcb, type: 3}
     - {fileID: 21300000, guid: 6b29acbb94c08cd9b95a8ba4284cf050, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Casing
@@ -299,6 +339,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 65ca29921ffe934da88542d1715eb296, type: 3}
     - {fileID: 21300000, guid: 8740765d24f3a3ec78ec5e1f17e80d7c, type: 3}
     - {fileID: 21300000, guid: 736197a251cf6a530999ceaea712c09a, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Earpads
     - Headband
@@ -344,6 +392,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: ea872531692ed6184a6f66c634d0cdd4, type: 3}
     - {fileID: 21300000, guid: e5b9bcdc329ac532abca0d876f00bc5d, type: 3}
     - {fileID: 21300000, guid: a706b44416cc89284b510df78466192f, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Panels
     - Case
@@ -389,6 +445,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 11990178cc1da5007af0d4761b5c1632, type: 3}
     - {fileID: 21300000, guid: dd80ab027b968b6f0b47389fcba62e4d, type: 3}
     - {fileID: 21300000, guid: d1c6ee426ec4e21178a9ce3fc09bc943, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Buttons
     - Grips
@@ -434,6 +498,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e3a4940ca86fea650b654b296cefdc04, type: 3}
     - {fileID: 21300000, guid: b545f5acc31f46be6bf315bd4d1d544f, type: 3}
     - {fileID: 21300000, guid: b8eb884c73a59a80b98775a54f9c6408, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Grille
     - Shell
@@ -479,10 +551,91 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 384f7ac2f0e2fd53fa14680a71b2b308, type: 3}
     - {fileID: 21300000, guid: f74db23934f384f5cb6815dc21f6b649, type: 3}
     - {fileID: 21300000, guid: cc9de295d87428747a943a60e15af79c, type: 3}
+    layerParts: []
+    screenCrackArea:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    screenCrackMaterial: {fileID: 0}
     phaseNames:
     - Screen
     - Housing
     - Power board
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Classic phone
+    tag: Phone
+    integrity: 90
+    price: 45
+    partsPerType: 2
+    scrapCash: 0
+    kind: 0
+    stages:
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -910938769, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    - {fileID: 5173892177513336889, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+    fragments:
+    - {fileID: 1608841399, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 1479616440, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: -1949297372, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: 884835753, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
+    - {fileID: -870742270, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -94357226, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -511595339, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: 1096592985, guid: 92e0e2eb44bc6ff669720fb959eadef1, type: 3}
+    - {fileID: -419639814, guid: 704bc71d789e9080785b9d21f8822306, type: 3}
+    - {fileID: -1161302857, guid: 704bc71d789e9080785b9d21f8822306, type: 3}
+    - {fileID: -1219683530, guid: 704bc71d789e9080785b9d21f8822306, type: 3}
+    - {fileID: 321952924, guid: 704bc71d789e9080785b9d21f8822306, type: 3}
+    layerParts:
+    - layer: 1
+      sprite: {fileID: 542656611, guid: 9269689237342134fbbedab9eb3f403a, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 0
+    - layer: 1
+      sprite: {fileID: -75475748, guid: 04dba68220a0669a09a6331e1d508a1b, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: -1
+    - layer: 2
+      sprite: {fileID: 6630097491169041797, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 0
+    - layer: 2
+      sprite: {fileID: -3519373199353218466, guid: 603b3d4897743d6dda73390b007bc46a, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 1
+    screenCrackArea:
+      serializedVersion: 2
+      x: 6
+      y: 22
+      width: 61
+      height: 108
+    screenCrackMaterial: {fileID: 2100000, guid: 3a58bd6523a04f747be7ebf4e2436a12, type: 2}
+    phaseNames:
+    - Screen
+    - Casing
+    - Modules
     color: {r: 1, g: 1, b: 1, a: 1}
   autoPrices: 960000002c01000058020000i
   autoIntervals:

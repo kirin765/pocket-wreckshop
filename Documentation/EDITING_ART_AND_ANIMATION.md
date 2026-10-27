@@ -34,12 +34,12 @@ The numbered device images represent damage that stays after a hit. They do not 
 | Images | Purpose |
 | --- | --- |
 | `00` | Intact device |
-| `01`–`05` | Small cracks and chips accumulating |
-| `06`–`11` | Individual surface sections coming away |
-| `12`–`17` | Casing sections exposing internals gradually |
+| `01`–`05` | Small cracks and chips accumulating on the surface |
+| `06`–`11` | Complete opaque casing, accumulating scuffs and dents |
+| `12`–`17` | Complete opaque internal layer, accumulating localized damage |
 | `18` | The whole device in its final wrecked state |
 
-Keep each family's images the same size and aligned. Preserve previous damage in the next image; avoid replacing the whole front at a step boundary. Start by editing existing images rather than changing their count. Unity imports them with Point filtering, no compression and 100 pixels per unit.
+Keep each family's images the same size and aligned, including the opaque silhouette and negative-space cutouts through frame 17. At 05→06, replace the damaged surface with the complete casing; at 11→12, replace the casing with the internal components. Do not crossfade, fade out, use translucent ghosting or reveal irregular peeled pieces. Each boundary changes only one layer. Start by editing existing images rather than changing their count. Unity imports them with Point filtering, no compression and 100 pixels per unit.
 
 For a new family, use the 192×224 working canvas and uniform crop described in [DEVICE_MODEL_RULES.md](DEVICE_MODEL_RULES.md). Existing exported PNGs are already cropped, so edit them at their current dimensions.
 
@@ -68,6 +68,6 @@ If you change the contact time, update both `PhoneVisual.Update()` and the first
 
 ## Check and share your changes
 
-Run **Pocket Wreckshop → Validate gameplay & saves**, then inspect the edited artwork in Play mode. For the original gradual-damage constraints, you can also run `python3 Tools/verify_damage_details.py` with Pillow installed. Changing those visual constraints may require updating that art check.
+Run **Pocket Wreckshop → Validate gameplay & saves**, then inspect the edited artwork in Play mode. For the current opaque-layer, alignment and first-crack constraints, you can also run `python3 Tools/verify_damage_details.py` with Pillow installed. Changing those visual constraints may require updating that art check.
 
 When ready, export using **Pocket Wreckshop → Build → WebGL** or **Build → Android APK**. Build output and Unity caches are ignored by Git. Commit your source changes and push `main` to GitHub; publishing the playable website is a separate action.

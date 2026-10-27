@@ -1,0 +1,29 @@
+{
+  "unchanged_source_png_sha256": {
+    "phone1.png": "4fbec6990ad90fd735a217ae54d76706a6b56aff03cb3fe0e5c0ff4c38606ce0",
+    "phone2.png": "bc7b454732dd815379ac0a34a63f26b4be793e10fa58b5ded9a6371387d2449e",
+    "phone0.png": "7b1b7b235ea98117d877fe404a6d72075ad290f4c0374912daae8a5fc4ffe2c8",
+    "phone1-parts0.png": "f8b566bc1d346f6a26f7bc6fa1bf54b7f303809594aa77d30d910d3165225cde",
+    "phone1-parts1.png": "644404f0215929bffb70502f4fcf65a82bcc5e181c4201354bc7574dc97dbaf0",
+    "phone2-parts0.png": "8ddcaa5c79d7377ac97ab8127baff64a359094505883bf1b8021ab7605938aca"
+  },
+  "layers": [
+    "phone0.png",
+    "phone1.png",
+    "phone2.png"
+  ],
+  "layer_1_mounted_part": "phone1-parts0.png",
+  "generated_device_images": false,
+  "mounted_parts": {
+    "1": [
+      "phone1-parts0.png",
+      "phone1-parts1.png"
+    ],
+    "2": [
+      "phone2.aseprite: Layer 1 (battery)",
+      "phone2.aseprite: Layer 2 (motherboard)"
+    ]
+  },
+  "unchanged_aseprite_sha256": "f57f7f9adbfb6dbfac619e36f19bbdc1f9b911e166c2673221adff656bdf4416",
+  "native_backing": "phone2.aseprite: Layer"
+}

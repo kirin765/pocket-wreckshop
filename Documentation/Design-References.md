@@ -1,6 +1,6 @@
 # Device art references
 
-All current device sprites are original procedural pixel art, produced by `Tools/generate_device_sprites.py`. Each of the seven families has ten aligned frames. The code draws clean casings, flat displays, boards, sealed power modules and separated components; no photographic, burnt, swollen or organic textures are used.
+All current device sprites are original procedural pixel art, produced by `Tools/generate_device_sprites.py`. Each of the seven families has nineteen aligned frames. The code draws clean casings, subdued displays, boards, sealed power modules and exposed components; no photographic, burnt, swollen or organic textures are used. Restrained material realism comes from neutral metal and plastic tones, directional edge lighting, narrow glass reflections, dark rubber and regular fabric weave—not photographic noise or translucent damage blends.
 
 Recognizable shapes were informed by real hardware:
 

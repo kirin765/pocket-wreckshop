@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "actualParts": 4,
+  "particleEffects": 0,
+  "checks": "contact timing, distinct damage thresholds, whole source parts, persistent layer carry-over, opaque desk scatter, recognizable backing, no fading, save restoration, manual collection",
+  "portrait_viewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "webgl_build": "Succeeded",
+  "android_build": "Succeeded",
+  "apk_signature_verified": true
+}
