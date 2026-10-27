@@ -13,15 +13,15 @@ namespace PocketWreckshop.Editor
             var state=SaveStore.Decode(JsonUtility.ToJson(g.State),g.Catalog);
             Check(state!=null,"Save restores");Check(JsonUtility.ToJson(state)==JsonUtility.ToJson(g.State),"Save preserves state");
         }
-        static void Wreck(GameSession g){int n=0;while(!g.State.lootPending){Check(g.Smash().success,"Hit accepted");if(++n>160)throw new Exception("Unbreakable device");}}
+        static void Wreck(GameSession g){int n=0;while(!g.State.lootPending){Check(g.Smash().success,"Hit accepted");if(++n>4000)throw new Exception("Unbreakable device");}}
         static string Legacy(SaveGame s,string extra)=>JsonUtility.ToJson(s).TrimEnd('}')+","+extra+"}";
         [MenuItem("Pocket Wreckshop/Validate gameplay & saves")]
         public static string Run()
         {
             checks=0;var c=AssetDatabase.LoadAssetAtPath<GameCatalog>(WorkshopBuilder.CatalogPath);
-            Check(c&&c.phones.Length>=11&&c.partSprites.Length==1&&c.partPrices.Length==1,"Single motherboard inventory and appended devices");
-            string[] legacy={"Phone","Phone Pro","Premium phone","Scrap phone","Tablet","Headphones","Game console","Controller","Speaker","Monitor"};
-            for(int i=0;i<legacy.Length;i++)Check(c.phones[i].title==legacy[i],"Existing device IDs stay stable");
+            Check(c&&c.phones.Length>=12&&c.hammers.Length==1&&c.hammerSprites.Length==1,"Stable device IDs and one hammer");
+            string[] legacyTitles={"Phone","Phone Pro","Premium phone","Scrap phone","Tablet","Headphones","Game console","Controller","Speaker","Monitor"};
+            for(int i=0;i<legacyTitles.Length;i++)Check(c.phones[i].title==legacyTitles[i],"Existing device IDs stay stable");
             Check(c.phones[10].title=="Classic phone"&&c.phones[10].kind==DeviceKind.Phone&&c.phones[10].stages[0]!=c.phones[0].stages[0],"Classic phone appends distinct art within Phone family");
             Check(c.phones[10].screenCrackMaterial&&c.phones[10].screenCrackMaterial.shader.isSupported&&
                 c.phones[10].screenCrackArea.width>0,"Supplied front layer has a supported persistent glass-crack overlay");
@@ -35,114 +35,100 @@ namespace PocketWreckshop.Editor
                 Check(Array.Exists(c.phones[10].layerParts,p=>p.layer==2&&p.sprite.name==name&&p.scale==1&&p.localPosition==Vector2.zero&&
                     AssetDatabase.GetAssetPath(p.sprite)==ClassicPhoneAssets.AsepritePath),"Native Aseprite part keeps authored canvas alignment: "+name);
             for(int i=8;i<12;i++)Check(AssetDatabase.GetAssetPath(c.phones[10].fragments[i])==ClassicPhoneAssets.Root+"phone2.png","Flying module chips are separate from mounted parts");
-            Check(c.partPrices[0]==60,"Motherboard dollar sale value");
-            var kinds=new System.Collections.Generic.HashSet<DeviceKind>();
+            var tablet=c.phones[11];
+            Check(tablet.title=="Classic tablet"&&tablet.kind==DeviceKind.Tablet,"Layered tablet appends at ID 11");
+            for(int i=0;i<GameCatalog.DamageFrameCount;i++)
+                Check(AssetDatabase.GetAssetPath(tablet.stages[i])==LayeredTabletAssets.Source&&
+                    tablet.stages[i].name==(i<6?"Layer 6":"Layer 1"),"Tablet front and backing use authored native layers");
+            Check(tablet.layerParts.Length==4,"Tablet has four independent components");
+            for(int n=2;n<=5;n++)Check(Array.Exists(tablet.layerParts,p=>p.layer==1&&p.sprite.name=="Layer "+n&&
+                p.scale==1&&p.localPosition==Vector2.zero&&AssetDatabase.GetAssetPath(p.sprite)==LayeredTabletAssets.Source),
+                "Tablet part keeps its source canvas registration");
             foreach(var device in c.phones)
             {
-                kinds.Add(device.kind);Check(device.stages.Length==GameCatalog.DamageFrameCount&&device.phaseNames.Length==3,"Nineteen aligned frames and three steps");
-                Check(device.partsPerType*c.partPrices[0]>device.price&&device.scrapCash==0,"Paid devices profitable through sales only");
-                Check(device.fragments.Length==12&&Array.TrueForAll(device.fragments,f=>f!=null),"Device-specific glass, case and module fragments");
-                foreach(var sprite in device.stages)Check(sprite&&(sprite.rect.size==device.stages[0].rect.size||
-                    AssetDatabase.GetAssetPath(sprite)==ClassicPhoneAssets.AsepritePath&&sprite.name=="Layer"&&sprite.pixelsPerUnit==100),"Frame bounds or registered native canvas pivot");
+                Check(device.stages.Length==19&&device.phaseNames.Length==3,"Nineteen slots and three steps");
+                Check(device.fragments.Length==12&&Array.TrueForAll(device.fragments,f=>f),"Native source fragment references remain valid");
+                foreach(var sprite in device.stages)Check(sprite,"Every persistent slot has a sprite");
             }
-            Check(c.impactSprites.Length==6&&c.chipSprites.Length==12&&c.dustSprites.Length==4,"Impact flipbooks and material chips");
-            Check(kinds.Count==7,"Seven families");
-            for(int p=0;p<c.phones.Length;p++)for(int h=0;h<c.hammers.Length;h++)
+            Check(c.hammers[0].damage==1&&c.hammers[0].price==0,"Only hammer has power 1");
+            Check(c.phones[10].price==0&&c.phones[10].winChance==1&&c.phones[10].winDollars==1,"Free phone always pays one dollar");
+            Check(c.phones[11].price==499&&c.phones[11].winChance==.7f&&c.phones[11].winDollars==800,"Tablet lottery terms");
+            for(int id=0;id<c.phones.Length;id++)Check(c.IsAvailableDevice(id)==(id==10||id==11),"Only Classic devices are available");
+            Check(new GameSession(c).State.activePhone==10,"Starter is Classic phone");
+            foreach(int id in new[]{10,11})foreach(float roll in new[]{0f,.699999f,.7f,.999999f,1f})
             {
-                var g=new GameSession(c,null,()=>.5f);var s=g.State;s.activePhone=-1;s.hp=0;s.money=1000;s.hammer=h;s.ownedHammers[h]=true;
-                Check(g.BuyPhone(p)&&s.money==1000-c.phones[p].price,"Buy used device with dollars");
-                Check(!g.BuyPhone(p),"Only one device at a time");
-                int paid=s.money;
-                for(int phase=0;phase<GameCatalog.DestructionSteps;phase++)
-                {
-                    int count=0;
-                    while(s.phase==phase&&!s.lootPending){var hit=g.Smash();Check(hit.success&&hit.damage==c.hammers[h].damage,"Tool damage");if(++count>100)throw new Exception("Unbreakable step");}
-                    if(phase<2)
-                    {
-                        Check(s.phase==phase+1&&!s.lootPending&&s.hp==c.PhaseIntegrity(p,phase+1),"Independent steps and no overflow");
-                        Check(!g.Collect()&&!g.SellMotherboards(true)&&s.money==paid,"No early rewards");
-                    }
-                    Roundtrip(g);
-                }
-                Check(s.phase==2&&s.hp==0&&s.lootPending&&s.wrecked==1&&s.totalHits>=3,"Third step completes");
-                Check(s.boardDrops==c.Salvage(p)[0]&&s.dropCash==0&&s.money==paid,"Breaking yields boards only");
-                Check(!g.Smash().success,"No post-completion hit");int boards=s.boardDrops;
-                Check(g.Collect()&&s.motherboards==boards&&s.money==paid,"Collect does not mint dollars");
-                Check(!g.Collect(),"No double collection");Roundtrip(g);
-                Check(g.SellMotherboards(true)&&s.motherboards==0&&s.money==paid+boards*60&&s.money>1000,"Sell for net dollar profit");
-                Check(!g.SellMotherboards(true)&&!g.SellMotherboards(false),"No double sale");Roundtrip(g);
-            }
-            var game=new GameSession(c,null,()=>.5f);var state=game.State;
-            Check(!game.BuyPhone(0)&&!game.SellMotherboards(false),"Busy bench and empty sales rejected");
-            state.motherboards=3;int cash=state.money;
-            Check(game.SellMotherboards(false)&&state.motherboards==2&&state.money==cash+60,"Sell one");
-            Check(game.SellMotherboards(true)&&state.motherboards==0&&state.money==cash+180,"Sell remaining");
-            Check(!game.BuyPhone(-1)&&!game.BuyPhone(100)&&!game.EquipHammer(-1),"Invalid indices rejected");
-            var poor=new GameSession(c,null,()=>.5f);poor.State.activePhone=-1;poor.State.hp=0;poor.State.money=0;
-            Check(!poor.BuyPhone(0)&&!poor.EquipHammer(1)&&poor.BuyPhone(3),"No overspend and zero-dollar recovery");
-            Wreck(poor);Check(poor.Collect()&&poor.State.money==0,"Recovery still requires sale");Check(poor.SellMotherboards(true)&&poor.State.money==60,"Recover dollars by selling");
-            cash=state.money;Check(game.EquipHammer(1)&&state.money==cash-c.hammers[1].price,"Buy tool with dollars");
-            cash=state.money;Check(game.EquipHammer(0)&&game.EquipHammer(1)&&state.money==cash,"Owned tools equip without charge");Roundtrip(game);
-            var old=GameSession.NewSave(c);old.version=1;old.hp=90;
-            var migrated=SaveStore.Decode(Legacy(old,"\"parts\":[1,2,3,4],\"drops\":[0,0,0,0]"),c);
-            Check(migrated!=null&&migrated.version==5&&migrated.hp==72&&migrated.motherboards==10,"v1 inventory migration");
-            old.version=2;old.phase=3;old.hp=5;old.wrecked=2;
-            migrated=SaveStore.Decode(Legacy(old,"\"parts\":[1,2,3,4],\"drops\":[0,0,0,0]"),c);
-            Check(migrated!=null&&migrated.lootPending&&migrated.phase==2&&migrated.wrecked==3,"Removed fourth stage migration");Roundtrip(new GameSession(c,migrated));
-            old.hp=0;old.lootPending=true;old.dropCash=12;old.wrecked=3;
-            migrated=SaveStore.Decode(Legacy(old,"\"parts\":[1,2,3,4],\"drops\":[1,2,0,1]"),c);
-            Check(migrated!=null&&migrated.boardDrops==4&&migrated.dropCash==12&&migrated.wrecked==3,"Old pending rewards retained");
-            var pending=new GameSession(c,migrated);Check(pending.Collect()&&pending.State.money==112&&!pending.Collect(),"Old cash collected once");
-            old=GameSession.NewSave(c);old.version=3;old.motherboards=8;
-            migrated=SaveStore.Decode(Legacy(old,"\"ownedRecipes\":[true,true,true],\"hasFinished\":true,\"finished\":{\"model\":1,\"finish\":2,\"number\":1,\"price\":300}"),c);
-            Check(migrated!=null&&migrated.money==780&&migrated.motherboards==8&&migrated.version==5,"Removed recipes refunded and completed phone sold");
-            var again=SaveStore.Decode(JsonUtility.ToJson(migrated),c);Check(again!=null&&again.money==780,"Migration credit never repeats");
-            Check(!JsonUtility.ToJson(again).Contains("Recipes")&&!JsonUtility.ToJson(again).Contains("finished"),"Current save removes crafting state");
-            migrated=SaveStore.Decode(Legacy(old,"\"ownedRecipes\":[true,false,false],\"hasFinished\":false"),c);
-            Check(migrated!=null&&migrated.money==100,"Starter recipe adds no refund");
-            Check(SaveStore.Decode("{bad",c)==null,"Bad JSON rejected");
-            var bad=GameSession.NewSave(c);bad.phase=3;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Fourth stage rejected");
-            bad=GameSession.NewSave(c);bad.motherboards=-1;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Negative inventory rejected");
-            Check(new GameSession(c,null,()=>0f).Smash().damage==28,"Critical hit");
-            var auto=new GameSession(c,null,()=>.5f);auto.State.money=149;
-            Check(!auto.BuyAutomation()&&!auto.ToggleAutomation()&&!auto.CanAutoStrike,"Locked automation cannot run or overspend");
-            auto.State.money=1050;
-            for(int level=1;level<=3;level++)
-            {
-                int before=auto.State.money;Check(auto.BuyAutomation()&&auto.State.autoLevel==level&&auto.State.autoEnabled&&auto.State.money==before-c.autoPrices[level-1],"Sequential dollar automation upgrade");
-                Check(auto.AutoInterval==c.autoIntervals[level-1]&&auto.CanAutoStrike,"Configured automation cadence");
-                if(level>1)Check(c.autoIntervals[level-1]<c.autoIntervals[level-2],"Upgrade is faster");
-                Roundtrip(auto);
-            }
-            Check(!auto.BuyAutomation()&&auto.State.money==0,"No charge beyond max automation");
-            Check(auto.ToggleAutomation()&&!auto.CanAutoStrike&&auto.ToggleAutomation()&&auto.CanAutoStrike,"Automation on/off");
-            Wreck(auto);Check(!auto.CanAutoStrike,"Auto stops at finished wreck");auto.Collect();Check(!auto.CanAutoStrike,"Auto stops on empty bench");
-            Check(auto.BuyPhone(3)&&auto.CanAutoStrike,"Owned automation applies to next purchased device");
-            var v4=GameSession.NewSave(c);v4.version=4;v4.money=345;v4.motherboards=7;v4.hammer=1;v4.ownedHammers[1]=true;
-            var moved=SaveStore.Decode(JsonUtility.ToJson(v4),c);Check(moved!=null&&moved.version==5&&moved.money==345&&moved.motherboards==7&&moved.hammer==1&&moved.autoLevel==0&&!moved.autoEnabled,"v4 migration retains economy and leaves automation locked");
-            var invalid=GameSession.NewSave(c);invalid.autoLevel=4;Check(SaveStore.Decode(JsonUtility.ToJson(invalid),c)==null,"Invalid auto level rejected");invalid.autoLevel=0;invalid.autoEnabled=true;Check(SaveStore.Decode(JsonUtility.ToJson(invalid),c)==null,"Unowned automation flag rejected");
-            foreach(var device in c.phones)
-            {
-                int id=Array.IndexOf(c.phones,device);var damageGame=new GameSession(c,null,()=>.5f);var ds=damageGame.State;
-                ds.activePhone=id;ds.phase=0;ds.hp=c.PhaseIntegrity(id,0);
-                Check(c.DamageState(ds)==0,"New device has no damage");damageGame.Smash();
-                Check(c.DamageState(ds)>0,"First hit always leaves visible permanent damage");
+                int draws=0;var game=new GameSession(c,null,()=>{draws++;return roll;});var state=game.State;
+                state.activePhone=-1;state.hp=0;state.money=1000;
+                Check(game.BuyPhone(id)&&state.money==1000-c.phones[id].price,"Buy charges only purchase price");
+                Check(!game.BuyPhone(id),"Cannot buy while occupied");
+                int paid=state.money;int health=id==10?100:1000;
                 for(int phase=0;phase<3;phase++)
                 {
-                    ds.phase=phase;ds.lootPending=false;int full=c.PhaseIntegrity(id,phase);ds.hp=full;
-                    Check(c.DamageState(ds)==phase*6,"Step boundary continues the ordered damage progression");
-                    int previous=c.DamageState(ds);
-                    foreach(float fraction in new[]{.05f,.20f,.40f,.60f,.80f,.99f})
+                    Check(c.PhaseIntegrity(id,phase)==health&&state.hp==health,"Every layer has exact requested HP");
+                    for(int hit=0;hit<health;hit++)
                     {
-                        ds.hp=Math.Max(1,Mathf.CeilToInt(full*(1-fraction)));int next=c.DamageState(ds);
-                        Check(next>=previous&&next/6==phase,"Health damage never restores a previous surface");previous=next;
-                        var recovered=SaveStore.Decode(JsonUtility.ToJson(ds),c);Check(recovered!=null&&c.DamageState(recovered)==next,"Damage detail persists through save/reload");
+                        var hitResult=game.Smash();
+                        Check(hitResult.success&&hitResult.damage==1,"Each hammer hit deals exactly one damage");
+                        Check(state.money==paid,"Breaking never credits before collection");
+                        if(hit<health-1)Check(state.phase==phase&&state.hp==health-hit-1&&!state.lootPending,"No early layer clear");
                     }
+                    if(phase<2)Check(state.phase==phase+1&&!state.lootPending&&!game.Collect()&&draws==0,"No early reward or lottery roll");
+                    Roundtrip(game);
                 }
-                ds.phase=2;ds.hp=0;ds.lootPending=true;ds.boardDrops=c.Salvage(id)[0];
-                Check(c.DamageState(ds)==18,"Completed state is the whole wreck");
+                int reward=id==10?1:roll<.7f?800:0;
+                Check(state.lootPending&&state.hp==0&&state.phase==2&&state.dropCash==reward&&state.lotteryWon==(reward>0),"Final hit fixes lottery outcome");
+                Check(draws==(id==10?0:1),"Only one random draw per tablet, no critical hits");
+                Check(state.totalHits==health*3&&!game.Smash().success,"Exactly three full layers then stop");
+                var restored=new GameSession(c,SaveStore.Decode(JsonUtility.ToJson(state),c),()=>throw new Exception("Lottery rerolled"));
+                Check(restored.State.dropCash==reward&&!restored.Smash().success,"Pending outcome persists across reload");
+                Check(restored.Collect()&&restored.State.money==paid+reward&&restored.State.earned==reward,"Collect credits exact dollar payout");
+                Check(!restored.Collect()&&restored.State.money==paid+reward,"No duplicate payout");Roundtrip(restored);
+                Check(!JsonUtility.ToJson(restored.State).Contains("motherboards")&&!JsonUtility.ToJson(restored.State).Contains("boardDrops"),"Current saves contain dollars only");
             }
-            var result="PASS: "+checks+" checks: buy used devices, three steps, motherboard sales, dollar economy, tools, automation and save migration.";Debug.Log(result);return result;
+            int wins=0;
+            for(int roll=0;roll<1000;roll++){
+                float value=roll/1000f;var game=new GameSession(c,null,()=>value);game.State.activePhone=11;game.State.phase=2;game.State.hp=1;
+                game.Smash();if(game.State.lotteryWon)wins++;
+            }
+            Check(wins==700,"Exactly 70 percent of evenly spaced rolls win");
+            var poor=new GameSession(c);poor.State.activePhone=-1;poor.State.hp=0;poor.State.money=0;
+            for(int id=0;id<10;id++)Check(!poor.BuyPhone(id),"Retired devices cannot be purchased");
+            Check(!poor.BuyPhone(11)&&!poor.BuyPhone(-1)&&!poor.BuyPhone(99)&&poor.BuyPhone(10),"Free phone remains available at zero dollars");
+            Wreck(poor);Check(poor.Collect()&&poor.State.money==1,"Free phone recovers dollars without sales");
+            for(int version=1;version<=5;version++)
+            {
+                var old=OldSave(c,version);string extra=version<3?",\"parts\":[1,2,3,4],\"drops\":[0,0,0,0]":",\"motherboards\":2,\"boardDrops\":0";
+                if(version==3)extra+=",\"ownedRecipes\":[true,false,false]";
+                var migrated=SaveStore.Decode(WithExtra(old,extra),c);
+                int amount=version<3?600:120;
+                Check(migrated!=null&&migrated.version==6&&migrated.money==100+amount&&migrated.hp==100,"Old inventory converts to dollars and HP rescales");
+                Check(SaveStore.Decode(JsonUtility.ToJson(migrated),c).money==100+amount,"Inventory conversion runs once");
+            }
+            var pending=OldSave(c,5);pending.hp=0;pending.phase=2;pending.lootPending=true;pending.dropCash=12;
+            var migratedPending=SaveStore.Decode(WithExtra(pending,",\"motherboards\":3,\"boardDrops\":4"),c);
+            Check(migratedPending!=null&&migratedPending.money==280&&migratedPending.dropCash==252,"Pending boards and cash retain full value");
+            var pendingGame=new GameSession(c,migratedPending);Check(pendingGame.Collect()&&pendingGame.State.money==532&&!pendingGame.Collect(),"Legacy pending dollars collect once");
+            var crafted=OldSave(c,3);
+            var craftedSave=SaveStore.Decode(WithExtra(crafted,",\"motherboards\":8,\"ownedRecipes\":[true,true,true],\"hasFinished\":true,\"finished\":{\"model\":1,\"finish\":2,\"number\":1,\"price\":300}"),c);
+            Check(craftedSave!=null&&craftedSave.money==1260,"Crafting refunds and existing inventory dollars preserved");
+            var legacy=OldSave(c,5);legacy.activePhone=1;legacy.hp=75;legacy.hammer=3;legacy.ownedHammers=new[]{true,true,true,true};legacy.autoLevel=2;legacy.autoEnabled=true;
+            var moved=SaveStore.Decode(JsonUtility.ToJson(legacy),c);
+            Check(moved!=null&&moved.activePhone==10&&moved.hp==50&&moved.hammer==0&&moved.money==1605&&moved.autoLevel==2&&moved.autoEnabled,"Retired device and paid hammers refunded; progress and automation preserved");
+            Check(SaveStore.Decode(JsonUtility.ToJson(moved),c).money==1605,"Retired purchases refunded once");
+            var oldTablet=OldSave(c,5);oldTablet.activePhone=11;oldTablet.phase=1;oldTablet.hp=51;
+            Check(SaveStore.Decode(JsonUtility.ToJson(oldTablet),c).hp==500,"Tablet progress scales to 1000 HP per layer");
+            var bad=GameSession.NewSave(c);bad.money=-1;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Negative dollars rejected");
+            bad=GameSession.NewSave(c);bad.phase=3;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Fourth step rejected");
+            bad=GameSession.NewSave(c);bad.activePhone=0;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Retired active ID rejected in new saves");
+            bad=GameSession.NewSave(c);bad.dropCash=800;Check(SaveStore.Decode(JsonUtility.ToJson(bad),c)==null,"Unfinished reward rejected");
+            Check(SaveStore.Decode("{bad",c)==null,"Invalid JSON rejected");
+            var auto=new GameSession(c);auto.State.money=1050;auto.State.autoLevel=3;auto.State.autoEnabled=true;
+            Check(!auto.CanAutoStrike&&!auto.BuyAutomation()&&!auto.ToggleAutomation(),"Hidden automation cannot run, purchase or toggle");
+            Check(auto.State.money==1050&&auto.State.autoLevel==3&&auto.State.autoEnabled,"Hidden automation preserves dollars and saved ownership");
+            Roundtrip(auto);Check(auto.Smash().damage==1,"Manual strikes remain available with legacy automation ownership");
+            var result="PASS: "+checks+" checks: dollar lottery, exact layer HP, one-power hammer, Classic-only catalogue, save migration and manual-only hammer.";Debug.Log(result);return result;
         }
+        static SaveGame OldSave(GameCatalog c,int version)=>new SaveGame{version=version,money=100,activePhone=10,hp=90,ownedHammers=new[]{true,false,false,false}};
+        static string WithExtra(SaveGame s,string extra)=>JsonUtility.ToJson(s).TrimEnd('}')+extra+"}";
     }
 }

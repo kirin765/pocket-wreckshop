@@ -1,0 +1,68 @@
+using System;
+using System.Collections;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
+namespace PocketWreckshop.Editor {
+public static class LotteryPlayChecks {
+static int checks;
+static void Check(bool condition,string reason){checks++;if(!condition)throw new Exception(reason);}
+static void SetSize(int w,int h){
+ var asm=typeof(UnityEditor.Editor).Assembly;var sizesType=asm.GetType("UnityEditor.GameViewSizes");
+ var singleton=typeof(UnityEditor.ScriptableSingleton<>).MakeGenericType(sizesType).GetProperty("instance").GetValue(null);
+ var groupType=asm.GetType("UnityEditor.GameViewSizeGroupType");var group=sizesType.GetMethod("GetGroup").Invoke(singleton,new[]{Enum.Parse(groupType,"Android")});
+ var sizeType=asm.GetType("UnityEditor.GameViewSize");var mode=asm.GetType("UnityEditor.GameViewSizeType");
+ var size=Activator.CreateInstance(sizeType,new object[]{Enum.Parse(mode,"FixedResolution"),w,h,"Lottery checks "+w});
+ group.GetType().GetMethod("AddCustomSize").Invoke(group,new[]{size});
+ int count=(int)group.GetType().GetMethod("GetTotalCount").Invoke(group,null);
+ var view=UnityEditor.EditorWindow.GetWindow(asm.GetType("UnityEditor.GameView"));
+ view.GetType().GetProperty("selectedSizeIndex",BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance).SetValue(view,count-1);view.Repaint();
+}
+static void Capture(string label,int w=450,int h=800){
+ var cam=Camera.main;var old=cam.targetTexture;var rect=cam.rect;var aspect=cam.aspect;var active=RenderTexture.active;
+ var rt=new RenderTexture(w,h,24);var tex=new Texture2D(w,h,TextureFormat.RGB24,false);
+ try{cam.targetTexture=rt;cam.rect=rect;cam.aspect=aspect;Canvas.ForceUpdateCanvases();cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,w,h),0,0);tex.Apply();System.IO.File.WriteAllBytes("Documentation/Lottery-"+label+"-"+w+".png",tex.EncodeToPNG());}
+ finally{cam.targetTexture=old;cam.rect=rect;cam.aspect=aspect;RenderTexture.active=active;UnityEngine.Object.Destroy(rt);UnityEngine.Object.Destroy(tex);}
+}
+
+static GameSession SetSession(WorkshopGame game,int id,float roll,bool final=true){
+ var empty=new GameSession(game.catalog);empty.State.activePhone=-1;empty.State.hp=0;game.phoneVisual.Refresh(empty);
+ var session=new GameSession(game.catalog,null,()=>roll);session.State.activePhone=id;
+ session.State.money=500;session.State.phase=final?2:0;session.State.hp=final?1:game.catalog.PhaseIntegrity(id,0);
+ var action=(Action)Delegate.CreateDelegate(typeof(Action),game,typeof(WorkshopGame).GetMethod("OnChanged",BindingFlags.NonPublic|BindingFlags.Instance));session.Changed+=action;
+ typeof(WorkshopGame).GetProperty("Session").SetValue(game,session);game.ShowTab(WorkshopTab.Smash);return session;
+}
+public static IEnumerator Run(){
+ var game=UnityEngine.Object.FindFirstObjectByType<WorkshopGame>();
+ Check(game.ui.navigation.Length==3,"Only three drawer destinations");
+ foreach(var size in new[]{new Vector2Int(450,800),new Vector2Int(360,640),new Vector2Int(390,844)}){
+  SetSize(size.x,size.y);yield return null;yield return null;
+  var session=SetSession(game,10,0,false);
+  game.ShowTab(WorkshopTab.Devices);
+  Check(game.ui.body.GetComponentsInChildren<Button>().Count(b=>b.name.StartsWith("Device buy"))==2,"Exactly two device cards");
+  var allText=string.Join(" ",game.ui.GetComponentsInChildren<Text>(true).Select(t=>t.text));
+  Check(!allText.ToLowerInvariant().Contains("motherboard"),"No motherboard inventory or sales UI");
+  Capture("Shop",size.x,size.y);
+  game.ShowTab(WorkshopTab.Tools);Check(game.ui.body.GetComponentsInChildren<Text>().Count(t=>t.name=="Equipped")==1,"Exactly one hammer");Capture("Hammer",size.x,size.y);
+  foreach(float roll in new[]{.2f,.8f}){
+   session=SetSession(game,11,roll);game.Strike();Check(session.State.hp==1&&!session.State.lootPending,"No damage on pointer-down");
+   yield return new WaitForSecondsRealtime(.13f);
+   int payout=roll<.7f?800:0;
+   Check(session.State.lootPending&&session.State.dropCash==payout&&session.State.money==500,"Final contact sets payout without crediting early");
+   Check(game.ui.body.GetComponentsInChildren<Text>().Any(t=>t.text=="You earned $"+payout.ToString("N0")),"Result shows amount earned");
+   var recovered=SaveStore.Decode(JsonUtility.ToJson(session.State),game.catalog);Check(recovered!=null&&recovered.dropCash==payout,"Result reloads unchanged");
+   yield return new WaitForSecondsRealtime(.4f);Capture(payout>0?"Win":"Loss",size.x,size.y);
+   Check(!game.AutoCanRun,"Automation stops on result");game.MainAction();
+   Check(session.State.money==500+payout&&!session.HasPhone,"Continue collects exact payout and clears bench");
+   game.MainAction();Check(session.State.money==500+payout,"Repeated main action cannot duplicate payout");
+  }
+  session=SetSession(game,10,0);game.Strike();game.SetMenu(true);yield return new WaitForSecondsRealtime(.15f);
+  Check(session.State.hp==1&&!session.State.lootPending,"Opening menu cancels unfinished strike");
+  Capture("Menu",size.x,size.y);game.SetMenu(false);yield return new WaitForSecondsRealtime(.2f);
+  game.Strike();yield return new WaitForSecondsRealtime(.35f);Check(session.State.dropCash==1&&session.State.lootPending,"Free phone reveals one dollar");Capture("Phone",size.x,size.y);
+ }
+ System.IO.File.WriteAllText("Documentation/Lottery-Play-Checks.json","{\"passed\":true,\"checks\":"+checks+",\"portraitViewports\":[\"450x800\",\"360x640\",\"390x844\"]}");
+ Debug.Log("LOTTERY PLAY CHECKS PASS: "+checks);
+}
+}}

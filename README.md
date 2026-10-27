@@ -6,43 +6,46 @@ To edit the sprites, damage details, hammer motion or hit effects yourself, star
 
 ## Game loop
 
-Buy a used device with dollars → break it → collect motherboards → sell them for dollars. Buy more used devices and stronger hammers. **Dollars are the only currency.** Motherboards are inventory items, sold for $60 each. There is no crafting, Build screen, recipe system or automatic cash reward for destruction. A starter phone is already on the bench. A $0 scrap phone remains available if you run out of money; it takes longer to break. Every paid device yields a net dollar profit when its motherboards are sold.
+Buy a device → break all three layers → reveal the dollar result → collect. There is no inventory or sales step. Only **Classic phone** and **Classic tablet** appear in the shop, and there is one free **Hammer** with power **1** (no critical hits).
+
+| Device | Price | HP per layer | Success / failure | Payout on success / failure |
+| --- | ---: | ---: | --- | --- |
+| Classic phone | $0 | 100 | 100% / 0% | $1 / $0 |
+| Classic tablet | $499 | 1,000 | 70% / 30% | $800 / $0 |
+
+The final contact rolls the result once. The bench shows how much was earned, and collection credits that exact amount once. A saved pending result never rerolls. The free phone remains available at $0. New games start with $100 and a Classic phone on the bench.
 
 Tap a device or press Space. Each has three destruction steps with nineteen aligned pixel sprites, ending in a whole-device wreck. Hammer contact, damage, audio, recoil and chips occur together after a 90 ms wind-up, followed by a rebound. Chips skitter across the desk. One tap can be buffered; opening the menu, help or another page cancels an unfinished swing.
 
-## Auto Hammer and hit effects
+## Hammer and hit effects
 
-Open **Hammers** and unlock Auto Hammer for **$150**. It hits once every **1.2 seconds** using your equipped hammer. Speed upgrades cost **$300** (0.75 seconds) and **$600** (0.45 seconds). The on/off button and upgrades stay in the Hammers menu; the bench keeps its simple tool display.
-
-Automation only hits the device currently on the visible bench. It pauses in menus, help, other pages, when the app loses focus or enters the background, and when the device is fully broken. Collection, device purchases and motherboard sales remain manual. There is no offline catch-up. Ownership, speed tier and on/off preference are saved; version-4 saves migrate with automation locked.
+Only the manual power-1 Hammer is available. Auto Hammer controls are hidden and automatic strikes are disabled, including for saves that previously owned and enabled automation. Old automation ownership stays in the save for compatibility; no upgrade charges or settings changes occur.
 
 Damage begins with short local cracks and chipped glass. Small cracks, scuffs and chips accumulate within each layer's six persistent states. Frame 06 replaces the complete damaged surface with the casing, and frame 12 replaces the casing with the internal components. Layers stay fully opaque: there is no crossfade, fade-out, translucent ghosting or irregular peeling mask. Only one layer changes at a phase boundary, and the outer device remains aligned. States are selected by health and remain until another hit; they do not play as a timed damage animation.
 
-The existing transient impact effects and Auto Hammer remain. No additional destruction steps or animation frames were added for this refinement.
+The existing transient impact effects remain. No additional destruction steps or animation frames were added for this refinement.
 
 ## Controls
 
-The top-left menu button opens a sliding side drawer: **Workbench**, **Used devices**, **Hammers**, and **Sell motherboards**. Select a page, tap X, tap outside, or press Escape to close it. Escape/Android Back also closes help. There are no bottom tabs. The bench displays the current hammer simply, without health bars, phase counters or damage statistics. Inventory offers Sell one and Sell all, with dollar values shown before sale.
+The top-left menu button opens a sliding side drawer: **Workbench**, **Used devices**, and **Hammer**. Select a page, tap X, tap outside, or press Escape to close it. Escape/Android Back also closes help. There are no bottom tabs. The bench shows the current hammer and, after completion, the dollar payout.
 
-Seven device families are included: phone, tablet, headphones, console, controller, speaker and monitor. Catalogue IDs 0–3 remain reserved for legacy phone products. New IDs must be appended.
-
-The Classic phone is appended at ID 10 within the phone family. It uses the supplied PNGs directly as its front, casing and internal layers, with a ribbon and plate mounted on layer 1 and a motherboard on layer 2, all loosening and detaching independently with damage. It costs $45 and yields two motherboards ($120 in sales). Scroll the Used devices list to reach it.
+Legacy catalogue IDs remain stored for migration, with the visible Classic phone at ID 10 and Classic tablet at ID 11. The Classic phone uses the supplied PNG/Aseprite layers; the tablet directly imports `ipad.aseprite` with Layer 6 as front, Layer 1 as backing, and Layers 2–5 as parts. Mounted parts vibrate separately and fade away only when their layer clears.
 
 ## Adding models
 
-Read **AGENTS.md** and **Documentation/DEVICE_MODEL_RULES.md** before changing models. They define the original pixel style, real-device silhouette references, 192×224 working canvas, nineteen aligned frames and twelve matching fragments, three steps, whole-device final wreck, common sprite atlas, motherboard-only salvage, dollar economy, side-menu navigation and verification.
+Read **AGENTS.md** and **Documentation/DEVICE_MODEL_RULES.md** before changing models. They define the original pixel style, real-device silhouette references, 192×224 working canvas, nineteen aligned frames and twelve matching fragments, three steps, whole-device final wreck, common sprite atlas, dollar lottery economy, side-menu navigation and verification.
 
-- `Assets/Wreckshop/Runtime/GameSession.cs`: purchases, destruction, collection and sales.
-- `Assets/Wreckshop/Runtime/GameCatalog.cs`: devices, hammers and board prices.
+- `Assets/Wreckshop/Runtime/GameSession.cs`: purchases, destruction, lottery results and dollar collection.
+- `Assets/Wreckshop/Runtime/GameCatalog.cs`: devices, hammer and lottery terms.
 - `Assets/Wreckshop/GameCatalog.asset`: Inspector-editable catalogue.
-- `Assets/Wreckshop/Runtime/SaveStore.cs`: schema-v5 saves and migrations.
+- `Assets/Wreckshop/Runtime/SaveStore.cs`: schema-v6 saves and migrations.
 - `Assets/Wreckshop/Runtime/WorkshopUI.cs`: side drawer, bench, used devices, tools and sales.
 - `Assets/Wreckshop/Runtime/WorkshopGame.cs`: input, contact timing, cancellation and audio.
 - `Assets/Wreckshop/Runtime/PhoneVisual.cs`: rigid recoil, hammer animation and debris.
 - `Assets/Wreckshop/Runtime/BreakEffect.cs`: transient sprite flipbooks and damped debris.
 - `Tools/generate_impact_sprites.py`: original pixel impact bursts, dust and chips.
 - `Tools/generate_device_sprites.py`: original pixel art.
-- `Assets/Wreckshop/Art/Devices/ClassicPhone/`: unchanged supplied layer PNGs. `ClassicPhoneAssets.cs` defines aligned sprite slices and discovers mounted parts using `phoneN-partsM.png` filenames. Use **Pocket Wreckshop → Add Classic phone** to import/update this device without rebuilding the scene. For phone layer 2, `phone2.aseprite` is imported directly: its `Layer` backing and `Layer 1`/`Layer 2` component sprites share the authored canvas pivot. Animation and private atlas generation are disabled; all sprites use the common atlas. Actual components scatter across the desk and remain until collection, without layer particle bursts. Their resting layout restores from saved health. The nineteen health slots reuse the three supplied device layers. Persistent pixel crack geometry overlays front glass as health decreases; no replacement damage images are used.
+- `Assets/Wreckshop/Art/Devices/ClassicPhone/`: unchanged supplied layer PNGs. `ClassicPhoneAssets.cs` defines aligned sprite slices and discovers mounted parts using `phoneN-partsM.png` filenames. Use **Pocket Wreckshop → Add Classic phone** to import/update this device without rebuilding the scene. For phone layer 2, `phone2.aseprite` is imported directly: its `Layer` backing and `Layer 1`/`Layer 2` component sprites share the authored canvas pivot. Animation and private atlas generation are disabled; all sprites use the common atlas. Actual components release and fade away over 0.28 seconds only when their layer clears, without particle bursts. Cleared pieces stay hidden after reload, and the next layer remains opaque. The nineteen health slots reuse the three supplied device layers. Persistent pixel crack geometry overlays front glass as health decreases; no replacement damage images are used.
 - `Assets/Wreckshop/Editor/WorkshopBuilder.cs`: catalogue/scene generation and platform builds.
 
 The scene builder overwrites the default scene/catalogue. Dynamic page contents are created at runtime. Regenerate art only when intended, then use **Pocket Wreckshop → Create or rebuild scene** to import and pack it. All world sprites must share `DeviceSprites.spriteatlas`.
@@ -62,6 +65,6 @@ Android uses ARM64/IL2CPP, portrait, minimum API 26. The APK is for local testin
 
 ## Saves
 
-PlayerPrefs retains the key `PocketWreckshop.Unity.Save.v1` and backup key. The internal schema is version 5. Old inventories convert to motherboards, and pending rewards remain collectable. Removed paid recipes are refunded ($120/$260), and an already assembled unsold phone is converted to its saved dollar sale value. Migration credits apply once; new saves contain no crafting state. Currency, owned hammers and the active device are retained. Existing fourth-stage saves become collectable three-stage wrecks.
+PlayerPrefs retains the key `PocketWreckshop.Unity.Save.v1` and backup key. The internal schema is version 6. Version 1–5 inventories convert immediately to dollars at their original $60 motherboard sale value; pending boards and cash become a pending dollar payout. Removed paid hammers are refunded. An in-progress retired device becomes a Classic phone with proportional layer progress and its purchase refunded. Existing Classic layer HP scales proportionally to 100 / 1,000. Old crafting refunds and finished-phone dollar conversion remain supported. Migration credits apply once. Automation ownership, sound, currency and pending rewards survive. Current saves contain no motherboard inventory or crafting state.
 
 Font licenses, design references, model rules, build reports and verification screenshots are included.

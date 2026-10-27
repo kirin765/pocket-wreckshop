@@ -21,7 +21,10 @@ namespace PocketWreckshop
     [Serializable] public class PhoneDefinition
     {
         public string title, tag;
-        public int integrity, price, partsPerType, scrapCash;
+        public int integrity, price;
+        [HideInInspector] public int partsPerType, scrapCash; // Legacy catalogue data for save conversion.
+        [Range(0,1)] public float winChance;
+        public int winDollars;
         public DeviceKind kind;
         public Sprite[] stages, fragments;
         public DeviceLayerPart[] layerParts=Array.Empty<DeviceLayerPart>();
@@ -38,11 +41,7 @@ namespace PocketWreckshop
         public const int DestructionSteps=3, FramesPerStep=6, DamageFrameCount=DestructionSteps*FramesPerStep+1;
         public int[] autoPrices={150,300,600};
         public float[] autoIntervals={1.2f,.75f,.45f};
-        public string[] partNames = { "Motherboard" };
-        public int[] partPrices = { 60 };
-        [Range(0, 1)] public float criticalChance = .12f;
         public Sprite[] damageStages,impactSprites,chipSprites,dustSprites;
-        public Sprite[] partSprites;
         public Sprite hammerSprite, matSprite;
         public Sprite[] hammerSprites;
         public Font bodyFont, headingFont;
@@ -55,14 +54,14 @@ namespace PocketWreckshop
         }
         public int PhaseIntegrity(int device,int phase)
         {
-            float[] scales={1f,.85f,1f};
-            return Mathf.Max(1,Mathf.RoundToInt(phones[device].integrity*scales[Mathf.Clamp(phase,0,2)]));
+            return Mathf.Max(1,phones[device].integrity);
         }
+        public const int ClassicPhoneId=10, ClassicTabletId=11;
+        public bool IsAvailableDevice(int index)=>index==ClassicPhoneId||index==ClassicTabletId;
         public string PhaseName(int device,int phase)
         {
             var names=phones[device].phaseNames;
             return names!=null&&names.Length==3?names[Mathf.Clamp(phase,0,2)]:new[]{"Surface","Casing","Modules"}[Mathf.Clamp(phase,0,2)];
         }
-        public int[] Salvage(int device) => new[]{Mathf.Max(1,phones[device].partsPerType)};
     }
 }

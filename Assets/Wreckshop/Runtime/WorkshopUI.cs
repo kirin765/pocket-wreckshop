@@ -34,19 +34,25 @@ namespace PocketWreckshop
             drawer=Box(menuLayer.transform,"Drawer",-272,0,272,800,Ink).rectTransform;drawer.GetComponent<Image>().raycastTarget=true;
             Label(drawer,"Menu title","Menu",22,12,176,44,18,White,true);
             menuClose=Button(drawer,"Close menu","X",210,10,48,44,Ink,White,17,null);
-            navigation=new Button[4];string[] names={"Workbench","Used devices","Hammers","Sell motherboards"};
-            for(int i=0;i<4;i++){navigation[i]=Button(drawer,"Menu destination "+i,names[i],12,92+i*60,248,48,Ink,White,14,null);navigation[i].GetComponentInChildren<Text>().alignment=TextAnchor.MiddleLeft;}
+            navigation=new Button[3];string[] names={"Workbench","Used devices","Hammer"};
+            for(int i=0;i<3;i++){navigation[i]=Button(drawer,"Menu destination "+i,names[i],12,92+i*60,248,48,Ink,White,14,null);navigation[i].GetComponentInChildren<Text>().alignment=TextAnchor.MiddleLeft;}
             menuLayer.SetActive(false);
             helpPanel=Box(root,"Instructions",0,0,450,800,new Color(.13f,.17f,.20f,.96f)).gameObject;helpPanel.GetComponent<Image>().raycastTarget=true;
             var modal=Box(helpPanel.transform,"Instruction card",26,180,398,410,Panel).rectTransform;
             Label(modal,"Title","How to play",22,18,354,37,17,White,true);
-            Label(modal,"Instructions","Buy a used device for dollars.\n\nTap it to break it in three steps. Space works too.\n\nCollect the motherboard, then sell it for dollars. Buy devices, hammers and Auto Hammer from the side menu.",22,72,354,205,14,White);
-            Label(modal,"Free device","Out of money? Pick the $0 scrap phone.\nYour progress saves on this device.",22,284,354,46,11,Muted);
+            Label(modal,"Instructions","Buy a used device for dollars.\n\nTap it to break it in three steps. Space works too.\n\nFinish all three steps to reveal your dollar payout. The Classic phone always pays $1. The tablet has a 70% chance of paying $800, otherwise $0.",22,72,354,205,14,White);
+            Label(modal,"Free device","Out of money? Pick the free Classic phone.\nYour progress saves on this device.",22,284,354,46,11,Muted);
             Button(modal,"Close","Got it",22,350,354,42,Mint,Ink,13,null,true);helpPanel.SetActive(false);
         }
         public void Bind(WorkshopGame game)
         {
-            for(int i=0;i<navigation.Length;i++){var tab=(WorkshopTab)i;navigation[i].onClick.RemoveAllListeners();navigation[i].onClick.AddListener(()=>game.ShowTab(tab));}
+            for(int i=0;i<Math.Min(3,navigation.Length);i++){var tab=(WorkshopTab)i;navigation[i].onClick.RemoveAllListeners();navigation[i].onClick.AddListener(()=>game.ShowTab(tab));}
+            // Older scenes still contain the retired sales destination and instruction text.
+            for(int i=0;i<navigation.Length;i++)navigation[i].gameObject.SetActive(i<3);
+            foreach(var text in helpPanel.GetComponentsInChildren<Text>(true)){
+                if(text.name=="Instructions")text.text="Buy a device for dollars.\n\nTap to break three layers. Space works too.\n\nFinish to reveal your payout: Classic phone always pays $1. Classic tablet pays $800 with a 70% chance, or $0 with a 30% chance.";
+                if(text.name=="Free device")text.text="The Classic phone is free.\nYour progress saves on this device.";
+            }
             BindButton(menuButton,()=>game.SetMenu(!MenuRequested));BindButton(menuClose,()=>game.SetMenu(false));BindButton(menuShade,()=>game.SetMenu(false));
             BindButton(soundButton,game.ToggleSound);BindButton(helpButton,()=>game.SetHelp(true));
             BindButton(helpPanel.GetComponentInChildren<Button>(true),()=>game.SetHelp(false));RefreshHud(game.Session);
@@ -63,7 +69,7 @@ namespace PocketWreckshop
         {
             Clear(body);RefreshHud(game.Session);
             for(int i=0;i<navigation.Length;i++){navigation[i].GetComponentInChildren<Text>().color=(int)game.Tab==i?Yellow:White;navigation[i].targetGraphic.color=(int)game.Tab==i?Panel:Ink;}
-            switch(game.Tab){case WorkshopTab.Smash:Smash(game);break;case WorkshopTab.Devices:Devices(game);break;case WorkshopTab.Tools:Tools(game);break;case WorkshopTab.Sell:Sell(game);break;}
+            switch(game.Tab){case WorkshopTab.Smash:Smash(game);break;case WorkshopTab.Devices:Devices(game);break;case WorkshopTab.Tools:Tools(game);break;}
         }
         void Title(string title,string subtitle)
         {
@@ -77,34 +83,30 @@ namespace PocketWreckshop
             Box(body,"Tool bar",12,648,426,43,Ink);Icon(body,catalog.hammerSprites[s.hammer],21,655,28,28);
             Label(body,"Equipped tool",catalog.hammers[s.hammer].title,58,654,260,30,13,White);
             Button(body,"Change tool","Tools",334,650,98,40,Ink,Yellow,12,()=>game.ShowTab(WorkshopTab.Tools));
-            if(s.lootPending||!g.HasPhone)Button(body,"Main action",s.lootPending?"Collect motherboard x"+s.boardDrops:"Buy a used device",18,692,414,40,Mint,Ink,13,game.MainAction,true);
+            if(s.lootPending){
+                var result=Box(body,"Lottery result",45,465,360,126,Ink).rectTransform;
+                Label(result,"Result",s.lotteryWon?"Success":"No win",16,8,328,26,15,s.lotteryWon?Mint:Muted,true,TextAnchor.MiddleCenter);
+                Label(result,"Payout","You earned $"+s.dropCash.ToString("N0"),16,42,328,48,24,White,true,TextAnchor.MiddleCenter);
+            }
+            if(s.lootPending||!g.HasPhone)Button(body,"Main action",s.lootPending?(s.dropCash>0?"Collect $"+s.dropCash.ToString("N0"):"Continue"):"Buy a used device",18,692,414,40,Mint,Ink,13,game.MainAction,true);
         }
         public void RefreshIntegrity(GameSession g) {}
         void Tools(WorkshopGame game)
         {
-            var s=game.Session.State;Title("Hammers","Choose your tool.");
+            var s=game.Session.State;Title("Hammer","Power 1 per hit.");
             for(int i=0;i<catalog.hammers.Length;i++)
             {
                 int index=i;var h=catalog.hammers[i];var card=Box(body,"Hammer "+i,22,90+i*114,406,102,Panel).rectTransform;
                 Icon(card,catalog.hammerSprites[i],12,18,58,58);Label(card,"Name",h.title,83,14,220,30,14,White);
                 Label(card,"Damage",h.damage+" damage per hit",83,48,220,29,11,Muted);
-                bool owned=s.ownedHammers[i];var buy=Button(card,"Hammer buy "+i,s.hammer==i?"Using":owned?"Equip":"$"+h.price,310,34,84,36,owned?Ink:Mint,owned?White:Ink,12,()=>game.EquipHammer(index));
-                buy.interactable=s.hammer!=i&&(owned||s.money>=h.price);
+                Label(card,"Equipped","Using",310,34,84,36,12,Mint);
             }
-            var auto=Box(body,"Auto hammer",22,552,406,160,Panel).rectTransform;
-            Label(auto,"Title","Auto hammer",16,8,374,30,15,White);
-            string speed=s.autoLevel==0?"Hits the current device automatically.":"One hit every "+game.Session.AutoInterval.ToString("0.##")+" seconds.";
-            Label(auto,"Details",speed+"\nPauses while menus are open.",16,42,374,42,12,Muted);
-            bool max=s.autoLevel>=catalog.autoPrices.Length;
-            string buyText=max?"Fully upgraded":(s.autoLevel==0?"Unlock $":"Faster $")+catalog.autoPrices[s.autoLevel];
-            Button(auto,"Buy automation",buyText,16,105,200,40,Mint,Ink,13,game.BuyAutomation).interactable=!max&&s.money>=catalog.autoPrices[s.autoLevel];
-            Button(auto,"Toggle automation",s.autoEnabled?"Auto: On":"Auto: Off",228,105,162,40,s.autoEnabled?Mint:Ink,s.autoEnabled?Ink:White,13,game.ToggleAutomation).interactable=s.autoLevel>0;
+
         }
         void Devices(WorkshopGame game)
         {
-            var s=game.Session.State;Title("Used devices",game.Session.HasPhone?"Collect the current device before buying another.":"Buy it. Break it. Sell the motherboard.");
-            var devices=new System.Collections.Generic.List<int>{0,4,5,6,7,8,9,3};
-            for(int i=10;i<catalog.phones.Length;i++)devices.Add(i);
+            var s=game.Session.State;Title("Used devices",game.Session.HasPhone?"Collect the current device before buying another.":"Break all three layers to reveal your payout.");
+            var devices=new System.Collections.Generic.List<int>{GameCatalog.ClassicPhoneId,GameCatalog.ClassicTabletId};
             var viewport=Rect(body,"Device list",0,82,450,642);
             var scrollSurface=viewport.gameObject.AddComponent<Image>();scrollSurface.color=Color.clear;
             viewport.gameObject.AddComponent<RectMask2D>();
@@ -114,25 +116,13 @@ namespace PocketWreckshop
             scroll.movementType=ScrollRect.MovementType.Clamped;
             for(int slot=0;slot<devices.Count;slot++)
             {
-                int index=devices[slot];var p=catalog.phones[index];float x=22+(slot%2)*208,y=8+(slot/2)*146;
-                var card=Box(content,"Device "+index,x,y,198,134,Panel).rectTransform;
+                int index=devices[slot];var p=catalog.phones[index];float x=22+(slot%2)*208,y=8+(slot/2)*222;
+                var card=Box(content,"Device "+index,x,y,198,210,Panel).rectTransform;
                 Label(card,"Name",p.title,10,4,178,24,12,White);Icon(card,p.stages[0],10,33,67,88);
-                int count=catalog.Salvage(index)[0];
-                Label(card,"Details","Boards x"+count+"\nSell for $"+(count*catalog.partPrices[0]),87,34,103,38,10,Muted);
-                var buy=Button(card,"Device buy "+index,"Buy $"+p.price,87,89,100,34,Mint,Ink,12,()=>game.BuyPhone(index));buy.interactable=!game.Session.HasPhone&&s.money>=p.price;
+                Label(card,"Details","Win "+(p.winChance*100).ToString("0")+"%: $"+p.winDollars+"\nLose "+((1-p.winChance)*100).ToString("0")+"%: $0",87,36,103,62,11,Muted);
+                Label(card,"Layer HP",p.integrity.ToString("N0")+" HP per layer",10,128,178,26,11,Muted);
+                var buy=Button(card,"Device buy "+index,(p.price==0?"Free":"Buy $"+p.price),10,164,178,34,Mint,Ink,12,()=>game.BuyPhone(index));buy.interactable=!game.Session.HasPhone&&s.money>=p.price;
             }
-        }
-        void Sell(WorkshopGame game)
-        {
-            var s=game.Session.State;int price=catalog.partPrices[0];Title("Sell motherboards","$"+price+" per motherboard");
-            var card=Box(body,"Motherboard inventory",22,90,406,210,Panel).rectTransform;
-            Icon(card,catalog.partSprites[0],27,23,79,89);
-            Label(card,"Name","Motherboards",128,25,256,30,16,White);
-            Label(card,"Count","In storage: "+s.motherboards,128,62,256,30,13,Muted);
-            Label(card,"Total value","Total value: $"+(s.motherboards*price),128,99,256,30,13,Mint);
-            Button(card,"Sell one","Sell one $"+price,16,154,178,40,Mint,Ink,13,()=>game.SellMotherboards(false)).interactable=s.motherboards>0;
-            Button(card,"Sell all","Sell all $"+(s.motherboards*price),208,154,182,40,Mint,Ink,13,()=>game.SellMotherboards(true)).interactable=s.motherboards>0;
-            Button(body,"Buy devices","Buy used devices",22,326,406,44,Panel,White,14,()=>game.ShowTab(WorkshopTab.Devices));
         }
         public void ShowToast(string text){toastLabel.text=text;toastUntil=Time.unscaledTime+1.2f;toastPanel.SetActive(true);toastPanel.transform.SetAsLastSibling();menuLayer.transform.SetAsLastSibling();helpPanel.transform.SetAsLastSibling();}
         void Update()

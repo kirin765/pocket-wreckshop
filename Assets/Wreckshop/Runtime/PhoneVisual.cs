@@ -18,6 +18,7 @@ namespace PocketWreckshop
             public float started=-10,frequency,damping,amplitude,rotation,duration;
             public Vector3 fromCenter,targetCenter,scatterCenter;
             public float fromAngle,targetAngle,scatterAngle,movedAt=-10,detachment=-1,scale;
+            public float fadeStarted=-10;
             public int layer,order;
         }
         readonly System.Collections.Generic.List<PartMotion> partMotions=new System.Collections.Generic.List<PartMotion>();
@@ -93,7 +94,7 @@ namespace PocketWreckshop
                     part.sortingLayerID=phone.sortingLayerID;part.sortingOrder=phone.sortingOrder+2+definition.sortingOrder;
                     motion.layer=definition.layer;motion.order=orders[definition.layer]++;motion.scale=definition.scale;
                     motion.home=new Vector3(definition.localPosition.x,definition.localPosition.y,0);
-                    motion.started=-10;motion.detachment=-1;
+                    motion.started=-10;motion.detachment=-1;motion.fadeStarted=-10;
                     motion.frequency=53f+motion.order*17f;motion.damping=11f+motion.order*2f;
                     motion.amplitude=.016f/(1f+motion.order*.2f);motion.rotation=motion.order%2==0?1.5f:-1.2f;motion.duration=.38f+motion.order*.025f;
                     var vertices=part.sprite.vertices;var bounds=new Bounds(vertices[0],Vector3.zero);
@@ -111,9 +112,24 @@ namespace PocketWreckshop
             {
                 var part=mountedParts[i];var motion=partMotions[i];bool wasVisible=part.enabled;
                 part.enabled=motion.layer<=state.phase;
-                if(!part.enabled){motion.detachment=-1;motion.started=-10;continue;}
+                if(!part.enabled){motion.detachment=-1;motion.started=-10;motion.fadeStarted=-10;continue;}
                 // Damage vibrates mounted parts; only clearing their owner layer releases them.
                 float progress=motion.layer<state.phase||state.lootPending?1:0;
+                if(progress>0)
+                {
+                    if(motion.detachment>=1)
+                    {
+                        part.enabled=motion.fadeStarted>=0&&Time.unscaledTime-motion.fadeStarted<.28f;
+                        if(!part.enabled)continue;
+                    }
+                    else if(animate&&wasVisible)motion.fadeStarted=Time.unscaledTime;
+                    else
+                    {
+                        // Cleared layers restored from saves never leave old pieces on the next layer.
+                        part.enabled=false;motion.detachment=1;motion.fadeStarted=-10;motion.started=-10;continue;
+                    }
+                }
+                else {part.color=Color.white;motion.fadeStarted=-10;}
                 if(Mathf.Approximately(progress,motion.detachment)&&wasVisible)continue;
                 var parent=progress>0?scatteredPartsRoot:phone.transform;
                 part.transform.SetParent(parent,wasVisible&&animate);part.transform.localScale=Vector3.one*motion.scale;
@@ -201,6 +217,12 @@ namespace PocketWreckshop
             {
                 var part=mountedParts[i];if(!part.enabled)continue;
                 var motion=partMotions[i];float partAge=Time.unscaledTime-motion.started;
+                if(motion.fadeStarted>=0)
+                {
+                    float fade=Mathf.Clamp01((Time.unscaledTime-motion.fadeStarted)/.28f);
+                    part.color=new Color(1,1,1,1-Mathf.SmoothStep(0,1,fade));
+                    if(fade>=1){part.enabled=false;continue;}
+                }
                 float shake=partAge>=0&&partAge<motion.duration?Mathf.Sin(partAge*motion.frequency)*Mathf.Exp(-partAge*motion.damping):0;
                 float slide=Mathf.Clamp01((Time.unscaledTime-motion.movedAt)/(.36f+motion.order*.06f));
                 float eased=1-Mathf.Pow(1-slide,3);

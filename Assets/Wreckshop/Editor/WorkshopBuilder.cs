@@ -52,18 +52,17 @@ namespace PocketWreckshop.Editor
                 AssetDatabase.CreateAsset(catalog,CatalogPath);
             }
             ConfigureDevices(catalog);
-            catalog.partNames=new[]{"Motherboard"};catalog.partPrices=new[]{60};
             string[] hammerNames={"Claw hammer","Club hammer","Sledgehammer","Power hammer"};
-            for(int i=0;i<4;i++)catalog.hammers[i].title=hammerNames[i];
+            for(int i=0;i<catalog.hammers.Length;i++)catalog.hammers[i].title=hammerNames[i];
             catalog.autoPrices=new[]{150,300,600};catalog.autoIntervals=new[]{1.2f,.75f,.45f};
             catalog.impactSprites=Effects("impact",6);catalog.dustSprites=Effects("dust",4);
             catalog.chipSprites=new Sprite[12];
             for(int phase=0;phase<3;phase++)for(int i=0;i<4;i++)catalog.chipSprites[phase*4+i]=Sprite("Effects/chip_"+phase+"_"+i);
             catalog.damageStages=catalog.phones[0].stages;
-            catalog.partSprites=new[]{Sprite("part_1")};
             catalog.hammerSprite=Sprite("hammer");catalog.hammerSprites=new[]{Sprite("hammer"),Sprite("hammer_1"),Sprite("hammer_2"),Sprite("hammer_3")};catalog.matSprite=Sprite("portrait_desk");
             catalog.bodyFont=AssetDatabase.LoadAssetAtPath<Font>("Assets/Wreckshop/Fonts/WorkshopBody.ttf");
             catalog.headingFont=AssetDatabase.LoadAssetAtPath<Font>("Assets/Wreckshop/Fonts/WorkshopPixel.ttf");
+            LotteryEconomy.Configure(catalog);
             EditorUtility.SetDirty(catalog);
             DeviceAtlasBuilder.Pack(catalog);
             var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
@@ -113,7 +112,8 @@ namespace PocketWreckshop.Editor
                 Device("Controller",DeviceKind.Controller,65,35,1,18),
                 Device("Speaker",DeviceKind.Speaker,60,30,1,16),
                 Device("Monitor",DeviceKind.Monitor,120,85,3,0),
-                Device("Classic phone",DeviceKind.Phone,90,45,2,0,"classic_phone")
+                Device("Classic phone",DeviceKind.Phone,100,0,0,0,"classic_phone"),
+                LayeredTabletAssets.Create()
             };
         }
         [MenuItem("Pocket Wreckshop/Add Classic phone")]
@@ -125,7 +125,7 @@ namespace PocketWreckshop.Editor
             if(!catalog)throw new InvalidOperationException("Existing catalogue is required.");
             var devices=new System.Collections.Generic.List<PhoneDefinition>(catalog.phones);
             if(!devices.Exists(p=>p.title=="Classic phone"))
-                devices.Add(Device("Classic phone",DeviceKind.Phone,90,45,2,0,"classic_phone"));
+                devices.Add(Device("Classic phone",DeviceKind.Phone,100,0,0,0,"classic_phone"));
             ClassicPhoneAssets.Assign(devices.Find(p=>p.title=="Classic phone"));
             catalog.phones=devices.ToArray();
             EditorUtility.SetDirty(catalog);
@@ -138,7 +138,7 @@ namespace PocketWreckshop.Editor
             {
                 var supplied=new PhoneDefinition{title=name,tag=kind.ToString(),kind=kind,integrity=hp,price=cost,
                     partsPerType=parts,scrapCash=0,color=Color.white,phaseNames=new[]{"Screen","Casing","Modules"}};
-                ClassicPhoneAssets.Assign(supplied);return supplied;
+                ClassicPhoneAssets.Assign(supplied);supplied.winChance=1;supplied.winDollars=1;return supplied;
             }
             string stem=artStem??kind.ToString().ToLowerInvariant();
             var stages=new Sprite[GameCatalog.DamageFrameCount];
@@ -175,6 +175,7 @@ namespace PocketWreckshop.Editor
                 importer.filterMode=FilterMode.Point;importer.textureCompression=TextureImporterCompression.Uncompressed;importer.mipmapEnabled=false;importer.alphaIsTransparency=true;importer.maxTextureSize=512;importer.SaveAndReimport();
             }
             ClassicPhoneAssets.Import();
+            LayeredTabletAssets.Import();
         }
         public static void ConfigurePlayer()
         {

@@ -1,3 +1,9 @@
+# Current behavior: mounted vibration, release on clear, then fade
+
+Parts remain mounted and fully opaque at every nonzero health value in their current layer. Ordinary hits cause independent rigid vibration that settles onto the authored mounts. Only the hammer contact that clears the layer releases its parts. Released sprites slide/rotate briefly and fade over 0.28 seconds, then hide; they do not remain over the next layer or reappear after reload. The backing and incoming layer stay fully opaque. Particle substitutes remain disabled for this phone. Save schema, three destruction steps, pending rewards and manual collection remain unchanged.
+
+The descriptions below record earlier iterations; the behavior above supersedes progressive health-based scattering and persistent desk pieces.
+
 # Current part behavior
 
 For the supplied layered phone, only its actual PNG/Aseprite components separate. Impact flipbooks, dust, chip bursts and sampled fragment particles are disabled. Parts loosen and slide/rotate apart at staggered health thresholds; they remain fully opaque on the tabletop across layer changes and completion until manual collection. The complete backing remains recognizable. Detached parts have a stable desk parent and do not inherit later backing recoil. Existing health/phase/pending-reward data reconstructs their exact resting positions after reload; no save migration or new gameplay rewards are introduced.

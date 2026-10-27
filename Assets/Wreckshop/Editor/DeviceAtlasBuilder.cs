@@ -18,7 +18,7 @@ namespace PocketWreckshop.Editor
             var texture=atlas.GetTextureSettings();texture.filterMode=FilterMode.Point;texture.generateMipMaps=false;texture.readable=false;atlas.SetTextureSettings(texture);
             var sprites=catalog.phones.SelectMany(p=>p.stages.Concat(p.fragments)
                 .Concat((p.layerParts??System.Array.Empty<DeviceLayerPart>()).Select(part=>part.sprite)))
-                .Concat(catalog.impactSprites).Concat(catalog.chipSprites).Concat(catalog.dustSprites).Concat(catalog.partSprites).Concat(catalog.hammerSprites).Append(catalog.matSprite).Distinct().Cast<Object>().ToArray();
+                .Concat(catalog.impactSprites).Concat(catalog.chipSprites).Concat(catalog.dustSprites).Concat(catalog.hammerSprites).Append(catalog.matSprite).Distinct().Cast<Object>().ToArray();
             var platform=atlas.GetPlatformSettings("DefaultTexturePlatform");platform.maxTextureSize=4096;platform.textureCompression=TextureImporterCompression.Uncompressed;atlas.SetPlatformSettings(platform);
             atlas.Add(sprites);atlas.SetIncludeInBuild(true);EditorUtility.SetDirty(atlas);AssetDatabase.SaveAssets();
             SpriteAtlasUtility.PackAtlases(new[]{atlas},EditorUserBuildSettings.activeBuildTarget);

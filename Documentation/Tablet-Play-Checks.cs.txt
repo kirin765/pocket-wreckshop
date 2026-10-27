@@ -1,0 +1,67 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
+namespace PocketWreckshop.Editor {
+public static class TabletPlayChecks {
+static int checks;
+static void Check(bool value,string reason){checks++;if(!value)throw new Exception(reason);}
+static List<SpriteRenderer> Parts(PhoneVisual v)=>(List<SpriteRenderer>)typeof(PhoneVisual).GetField("mountedParts",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(v);
+static void SetSize(int w,int h){
+ var asm=typeof(UnityEditor.Editor).Assembly;var sizesType=asm.GetType("UnityEditor.GameViewSizes");
+ var singleton=typeof(UnityEditor.ScriptableSingleton<>).MakeGenericType(sizesType).GetProperty("instance").GetValue(null);
+ var groupType=asm.GetType("UnityEditor.GameViewSizeGroupType");var group=sizesType.GetMethod("GetGroup").Invoke(singleton,new[]{Enum.Parse(groupType,"Android")});
+ var sizeType=asm.GetType("UnityEditor.GameViewSize");var mode=asm.GetType("UnityEditor.GameViewSizeType");
+ var size=Activator.CreateInstance(sizeType,new object[]{Enum.Parse(mode,"FixedResolution"),w,h,"Tablet checks "+w});
+ group.GetType().GetMethod("AddCustomSize").Invoke(group,new[]{size});
+ int count=(int)group.GetType().GetMethod("GetTotalCount").Invoke(group,null);
+ var view=UnityEditor.EditorWindow.GetWindow(asm.GetType("UnityEditor.GameView"));
+ view.GetType().GetProperty("selectedSizeIndex",BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance).SetValue(view,count-1);view.Repaint();
+}
+static void Capture(string label,int w=450,int h=800){
+ var cam=Camera.main;var old=cam.targetTexture;var rect=cam.rect;var aspect=cam.aspect;var active=RenderTexture.active;
+ var rt=new RenderTexture(w,h,24);var tex=new Texture2D(w,h,TextureFormat.RGB24,false);
+ try{cam.targetTexture=rt;cam.rect=rect;cam.aspect=aspect;Canvas.ForceUpdateCanvases();cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,w,h),0,0);tex.Apply();System.IO.File.WriteAllBytes("Documentation/Tablet-"+label+"-"+w+".png",tex.EncodeToPNG());}
+ finally{cam.targetTexture=old;cam.rect=rect;cam.aspect=aspect;RenderTexture.active=active;UnityEngine.Object.Destroy(rt);UnityEngine.Object.Destroy(tex);}
+}
+public static IEnumerator Run(){
+ var game=UnityEngine.Object.FindFirstObjectByType<WorkshopGame>();var s=game.Session.State;var v=game.phoneVisual;
+ s.activePhone=11;s.phase=0;s.hp=1;s.lootPending=false;s.autoEnabled=false;game.ShowTab(WorkshopTab.Smash);
+ Check(v.phone.sprite.name=="Layer 6"&&Parts(v).All(p=>!p.enabled),"Only front visible initially");
+ game.Strike();Check(s.phase==0,"Damage waits for contact");yield return new WaitForSecondsRealtime(.12f);
+ Check(s.phase==1&&Parts(v).Count(p=>p.enabled)==4,"Front clearing exposes four parts");yield return new WaitForSecondsRealtime(.5f);
+ var homes=Parts(v).Select(p=>p.transform.localPosition).ToArray();int hp=s.hp;
+ game.Strike();Check(s.hp==hp,"Component damage waits for contact");yield return new WaitForSecondsRealtime(.115f);
+ Check(s.hp<hp&&Parts(v).All(p=>p.enabled&&p.color.a==1&&p.transform.parent==v.phone.transform),"Hit keeps parts mounted opaque");
+ var offsets=Parts(v).Select((p,i)=>(p.transform.localPosition-homes[i]).sqrMagnitude).ToArray();
+ Check(offsets.Count(d=>d>0.00000001f)>=3&&offsets.Distinct().Count()>2,"Components vibrate independently");Capture("Vibration");
+ yield return new WaitForSecondsRealtime(.55f);Check(Parts(v).Select((p,i)=>(p.transform.localPosition-homes[i]).magnitude).All(d=>d<.0001f),"Parts settle on mounts");
+ s.hp=1;v.Refresh(game.Session);Check(Parts(v).All(p=>p.enabled&&p.color.a==1),"One HP keeps all parts mounted");Capture("OneHP");
+ game.Strike();yield return new WaitForSecondsRealtime(.19f);
+ Check(s.phase==2&&Parts(v).All(p=>p.enabled&&p.color.a>0&&p.color.a<1),"Clearing releases and fades actual components");
+ Check(v.phone.color.a==1,"Backing stays opaque");Capture("Release");yield return new WaitForSecondsRealtime(.35f);
+ Check(Parts(v).All(p=>!p.enabled)&&v.effectsRoot.childCount==0,"No overlap or particle substitutes after clearing");Capture("Cleared");
+ // All nineteen health slots in Play mode, plus pristine/final at portrait aspect ratios.
+ foreach(var size in new[]{new Vector2Int(450,800),new Vector2Int(360,640),new Vector2Int(390,844)}){
+  SetSize(size.x,size.y);yield return null;yield return null;
+  for(int frame=0;frame<19;frame++){
+   var empty=new GameSession(game.catalog);empty.State.activePhone=-1;v.Refresh(empty);
+   s.phase=Math.Min(2,frame/6);s.lootPending=frame==18;
+   int maximum=game.catalog.PhaseIntegrity(11,s.phase);int level=frame%6;
+   s.hp=s.lootPending?0:Math.Max(1,maximum-(int)Math.Ceiling(level*maximum/6f));
+   v.Refresh(game.Session);Check(game.catalog.DamageState(s)==frame,"Health selects expected tablet frame "+frame);
+   Check(v.phone.enabled&&v.phone.color.a==1,"Whole-device base stays visible");
+   if(frame<6)Check(Parts(v).All(p=>!p.enabled),"Front hides components");
+   if(frame>=6&&frame<12)Check(Parts(v).Count(p=>p.enabled)==4,"All native parts visible");
+   if(frame>=12)Check(Parts(v).All(p=>!p.enabled),"Cleared parts stay hidden");
+   var camera=Camera.main;var low=camera.WorldToViewportPoint(v.phone.bounds.min);var high=camera.WorldToViewportPoint(v.phone.bounds.max);
+   Check(low.x>=0&&high.x<=1,"Device fits portrait width");
+   Capture("Frame"+frame.ToString("D2"),size.x,size.y);
+  }
+ }
+ System.IO.File.WriteAllText("Documentation/Tablet-Play-Checks.json","{\"passed\":true,\"checks\":"+checks+",\"frames\":19,\"portraitViewports\":[\"450x800\",\"360x640\",\"390x844\"]}");
+ Debug.Log("TABLET PLAY CHECKS PASS: "+checks);
+}
+}}

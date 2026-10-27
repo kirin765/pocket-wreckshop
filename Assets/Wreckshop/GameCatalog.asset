@@ -13,26 +13,11 @@ MonoBehaviour:
   m_Name: GameCatalog
   m_EditorClassIdentifier: Assembly-CSharp::PocketWreckshop.GameCatalog
   hammers:
-  - title: Claw hammer
-    description: A little rusty. A lot of heart.
-    damage: 14
+  - title: Hammer
+    description: Power 1
+    damage: 1
     price: 0
-    color: {r: 0.7137255, g: 0.7647059, b: 0.7411765, a: 1}
-  - title: Club hammer
-    description: Twice the punch. Half the taps.
-    damage: 28
-    price: 120
-    color: {r: 0.60784316, g: 0.8666667, b: 0.7647059, a: 1}
-  - title: Sledgehammer
-    description: For very personal demolition.
-    damage: 55
-    price: 360
-    color: {r: 0.9372549, g: 0.7176471, b: 0.46666667, a: 1}
-  - title: Power hammer
-    description: A one-hit wonder. Usually.
-    damage: 110
-    price: 950
-    color: {r: 0.77254903, g: 0.67058825, b: 0.9647059, a: 1}
+    color: {r: 1, g: 1, b: 1, a: 1}
   phones:
   - title: Phone
     tag: Phone
@@ -40,6 +25,8 @@ MonoBehaviour:
     price: 25
     partsPerType: 1
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 0
     stages:
     - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
@@ -93,6 +80,8 @@ MonoBehaviour:
     price: 75
     partsPerType: 3
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 0
     stages:
     - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
@@ -146,6 +135,8 @@ MonoBehaviour:
     price: 155
     partsPerType: 6
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 0
     stages:
     - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
@@ -199,6 +190,8 @@ MonoBehaviour:
     price: 0
     partsPerType: 1
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 0
     stages:
     - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
@@ -252,6 +245,8 @@ MonoBehaviour:
     price: 60
     partsPerType: 2
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 1
     stages:
     - {fileID: 21300000, guid: c595374bf1382f7868c498bd40fafdd0, type: 3}
@@ -305,6 +300,8 @@ MonoBehaviour:
     price: 40
     partsPerType: 1
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 2
     stages:
     - {fileID: 21300000, guid: 5c865052ee6029396936210d2020092b, type: 3}
@@ -358,6 +355,8 @@ MonoBehaviour:
     price: 120
     partsPerType: 4
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 3
     stages:
     - {fileID: 21300000, guid: f2ce545cfd53b293f9ec80f77acf06b7, type: 3}
@@ -411,6 +410,8 @@ MonoBehaviour:
     price: 35
     partsPerType: 1
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 4
     stages:
     - {fileID: 21300000, guid: 82294ae906ebd2a2c9d141caad4a473e, type: 3}
@@ -464,6 +465,8 @@ MonoBehaviour:
     price: 30
     partsPerType: 1
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 5
     stages:
     - {fileID: 21300000, guid: db45edeb67f79671f9dfc4c3401e3cdc, type: 3}
@@ -517,6 +520,8 @@ MonoBehaviour:
     price: 85
     partsPerType: 3
     scrapCash: 0
+    winChance: 0
+    winDollars: 0
     kind: 6
     stages:
     - {fileID: 21300000, guid: aea3dc5e4f961dc08acd8676c3d6cf99, type: 3}
@@ -566,10 +571,12 @@ MonoBehaviour:
     color: {r: 1, g: 1, b: 1, a: 1}
   - title: Classic phone
     tag: Phone
-    integrity: 90
-    price: 45
+    integrity: 100
+    price: 0
     partsPerType: 2
     scrapCash: 0
+    winChance: 1
+    winDollars: 1
     kind: 0
     stages:
     - {fileID: 786264295, guid: 47baf2b444e0c8a09af8e1c2eaae4cf1, type: 3}
@@ -637,15 +644,86 @@ MonoBehaviour:
     - Casing
     - Modules
     color: {r: 1, g: 1, b: 1, a: 1}
+  - title: Classic tablet
+    tag: Tablet
+    integrity: 1000
+    price: 499
+    partsPerType: 3
+    scrapCash: 0
+    winChance: 0.7
+    winDollars: 800
+    kind: 1
+    stages:
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    fragments:
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 131293266193103866, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -428580800184635780, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 685880130588114020, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 1982494830355359666, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: 3956157477492275984, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    - {fileID: -4596481932935523219, guid: 908731148735a1c39a679e21daac6246, type: 3}
+    layerParts:
+    - layer: 1
+      sprite: {fileID: 685880130588114020, guid: 908731148735a1c39a679e21daac6246, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 0
+    - layer: 1
+      sprite: {fileID: 1982494830355359666, guid: 908731148735a1c39a679e21daac6246, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 1
+    - layer: 1
+      sprite: {fileID: 3956157477492275984, guid: 908731148735a1c39a679e21daac6246, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 2
+    - layer: 1
+      sprite: {fileID: -4596481932935523219, guid: 908731148735a1c39a679e21daac6246, type: 3}
+      localPosition: {x: 0, y: 0}
+      scale: 1
+      sortingOrder: 3
+    screenCrackArea:
+      serializedVersion: 2
+      x: 7
+      y: 12
+      width: 62
+      height: 80
+    screenCrackMaterial: {fileID: 2100000, guid: 3a58bd6523a04f747be7ebf4e2436a12, type: 2}
+    phaseNames:
+    - Screen
+    - Components
+    - Backing
+    color: {r: 1, g: 1, b: 1, a: 1}
   autoPrices: 960000002c01000058020000i
   autoIntervals:
   - 1.2
   - 0.75
   - 0.45
-  partNames:
-  - Motherboard
-  partPrices: 3c000000i
-  criticalChance: 0.12
   damageStages:
   - {fileID: 21300000, guid: 9d322e1cd7f5fbf71946915c729807f0, type: 3}
   - {fileID: 21300000, guid: bff9c5fdad77d9a54b9aaa4577b281fd, type: 3}
@@ -691,14 +769,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6c1d43ba7087f11f5a8de09e8bd583ac, type: 3}
   - {fileID: 21300000, guid: 8df1f87ce689a5dc09cb802543ef5da5, type: 3}
   - {fileID: 21300000, guid: 96b5b15ec463b9cf3bff66be5b897be1, type: 3}
-  partSprites:
-  - {fileID: 21300000, guid: 30f3b64dc3e49cfa3be5b6d6e7b5d420, type: 3}
   hammerSprite: {fileID: 21300000, guid: 07c7015fada2a820095f879a89b144ab, type: 3}
   matSprite: {fileID: 21300000, guid: 4134f1e53be500da39ac13d67967af38, type: 3}
   hammerSprites:
   - {fileID: 21300000, guid: 07c7015fada2a820095f879a89b144ab, type: 3}
-  - {fileID: 21300000, guid: c5301ccc4ec3e4f98ae84f1f593d6fb6, type: 3}
-  - {fileID: 21300000, guid: 456e9efa1564ea14283087413201fc9c, type: 3}
-  - {fileID: 21300000, guid: 80494f929a3cb5a13b1bdeec54ee21f7, type: 3}
   bodyFont: {fileID: 12800000, guid: 00a34be63f9a9372b8d2b80d3690525d, type: 3}
   headingFont: {fileID: 12800000, guid: 067d9d61594db68db89bc06e7df38097, type: 3}

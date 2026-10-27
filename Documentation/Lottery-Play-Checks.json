@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": 58,
+  "portraitViewports": [
+    "450x800",
+    "360x640",
+    "390x844"
+  ],
+  "gameplayAndSaveChecks": 50672,
+  "saveSchema": 6,
+  "originalPrimaryAndBackupRestored": true,
+  "originalPrimaryAndBackupMigrationVerified": true,
+  "webglBuild": "Succeeded",
+  "androidBuild": "Succeeded",
+  "apkSignatureVerified": true
+}

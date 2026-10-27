@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace PocketWreckshop
 {
-    public enum WorkshopTab { Smash, Devices, Tools, Sell }
+    public enum WorkshopTab { Smash, Devices, Tools }
     public sealed class WorkshopGame : MonoBehaviour
     {
         public GameCatalog catalog;
@@ -19,10 +19,8 @@ namespace PocketWreckshop
         Coroutine attack;
         bool queuedStrike;
         Vector3 queuedPoint;
-        bool dirty,appPaused;
-        bool appFocused=true;
-        float autoDue;
-        public bool AutoCanRun => Session!=null&&Session.CanAutoStrike&&Tab==WorkshopTab.Smash&&!HelpOpen&&!MenuOpen&&!appPaused&&appFocused;
+        bool dirty;
+        public bool AutoCanRun => false;
         void Awake()
         {
             Application.targetFrameRate = 60;
@@ -48,9 +46,8 @@ namespace PocketWreckshop
             // Coalesce changes within a frame, but persist every completed action.
             if (dirty) { SaveStore.Save(Session.State); dirty = false; }
         }
-        void OnApplicationPause(bool paused){appPaused=paused;CancelAttack();ResetAutoClock();if(paused&&Session!=null)SaveStore.Save(Session.State);}
-        void OnApplicationFocus(bool focused){appFocused=focused;if(!focused)CancelAttack();ResetAutoClock();}
-        void ResetAutoClock(){autoDue=Time.unscaledTime+(Session!=null?Session.AutoInterval:1.2f);}
+        void OnApplicationPause(bool paused){CancelAttack();if(paused&&Session!=null)SaveStore.Save(Session.State);}
+        void OnApplicationFocus(bool focused){if(!focused)CancelAttack();}
         void OnApplicationQuit() { if (Session != null) SaveStore.Save(Session.State); }
         void OnDestroy()
         {
@@ -64,16 +61,11 @@ namespace PocketWreckshop
             if(Keyboard.current!=null&&Keyboard.current.escapeKey.wasPressedThisFrame){if(HelpOpen)SetHelp(false);else SetMenu(!ui.MenuRequested);}
             if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame &&
                 Tab == WorkshopTab.Smash && !HelpOpen && !MenuOpen) Strike();
-            if(!AutoCanRun){ResetAutoClock();return;}
-            if(attack==null&&Time.unscaledTime>=autoDue)
-            {
-                var b=phoneVisual.phone.bounds;
-                RequestStrike(b.center+new Vector3(Random.Range(-.24f,.24f)*b.size.x,Random.Range(-.24f,.24f)*b.size.y,0));
-            }
+
         }
         public void ShowTab(WorkshopTab next)
         {
-            CancelAttack();ResetAutoClock();
+            CancelAttack();
             ui.SetMenu(false);
             Tab = next;
             phoneVisual.gameObject.SetActive(next == WorkshopTab.Smash);
@@ -96,7 +88,7 @@ namespace PocketWreckshop
         {
             if(HelpOpen||MenuOpen||Tab!=WorkshopTab.Smash||!Session.HasPhone||Session.State.lootPending)return;
             if(attack!=null){queuedStrike=true;queuedPoint=point;return;}
-            ResetAutoClock();attack=StartCoroutine(Attack(point));
+            attack=StartCoroutine(Attack(point));
         }
         IEnumerator Attack(Vector3 point)
         {
@@ -126,7 +118,7 @@ namespace PocketWreckshop
             if (Session.State.lootPending)
             {
                 Session.Collect(); phoneVisual.ClearEffects(); Play(coinClip);
-                ui.ShowToast("Motherboards collected."); ShowTab(WorkshopTab.Smash);
+                ShowTab(WorkshopTab.Smash);
             }
             else if (Session.HasPhone) Strike();
             else ShowTab(WorkshopTab.Devices);
@@ -135,17 +127,6 @@ namespace PocketWreckshop
         {
             if (Session.BuyPhone(index)) { Play(coinClip); ShowTab(WorkshopTab.Smash); }
         }
-        public void EquipHammer(int index)
-        {
-            if (Session.EquipHammer(index)) { Play(coinClip); ui.Render(this); ui.ShowToast(catalog.hammers[index].title+" equipped."); }
-        }
-        public void SellMotherboards(bool all)
-        {
-            int count=all?Session.State.motherboards:1;
-            if(Session.SellMotherboards(all)){Play(coinClip);ui.Render(this);ui.ShowToast("Sold for $"+(count*catalog.partPrices[0]));}
-        }
-        public void BuyAutomation(){if(Session.BuyAutomation()){ResetAutoClock();Play(coinClip);ui.Render(this);}}
-        public void ToggleAutomation(){if(Session.ToggleAutomation()){CancelAttack();ResetAutoClock();ui.Render(this);}}
         public void SetMenu(bool open){if(open)CancelAttack();ui.SetMenu(open);}
         public void ToggleSound() { Session.ToggleSound(); ui.RefreshHud(Session); Play(coinClip); }
         public void SetHelp(bool open) { if(open){CancelAttack();ui.SetMenu(false);}HelpOpen=open;ui.helpPanel.SetActive(open); }
